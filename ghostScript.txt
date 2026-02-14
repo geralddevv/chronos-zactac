@@ -1,0 +1,6 @@
+K only ghostScript:
+
+gswin64c -dSAFER -dBATCH -dNOPAUSE -sDEVICE=pdfwrite -sColorConversionStrategy=Gray -dProcessColorModel=/DeviceCMYK -dOverrideICC -sOutputFile="Eureka_test_sheet_K_only.pdf" "Eureka test sheet.pdf"
+
+preserve the embedded text also: -- use this to preserve text
+gswin64c -dSAFER -dBATCH -dNOPAUSE -sDEVICE=pdfwrite -dPDFSETTINGS=/prepress -dProcessColorModel=/DeviceCMYK -sColorConversionStrategy=Gray -dOverrideICC -dEmbedAllFonts=true -dSubsetFonts=false -dDownsampleColorImages=false -dDownsampleGrayImages=false -dDownsampleMonoImages=false -sOutputFile="output_K_only.pdf" "input.pdf"
