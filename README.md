@@ -37,7 +37,9 @@ Engineered for **speed**, **precision**, and **print-shop reliability**.
 ---
 
 ## License
-MIT License — free for both commercial and personal use.
+© 2026 Gerald. All rights reserved.
+
+This software is for personal use only and may not be copied, modified, or distributed.
 
 ---
 
