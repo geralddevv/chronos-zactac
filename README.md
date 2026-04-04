@@ -1,7 +1,7 @@
 # **Chronos**
 ### High-Performance Coupon Generation Engine
 
-<div align="center">
+<div align="left">
   <img src="https://img.shields.io/badge/Build-Passing-brightgreen?style=for-the-badge" />
   <img src="https://img.shields.io/badge/React-18-blue?style=for-the-badge&logo=react&logoColor=white" />
   <img src="https://img.shields.io/badge/PDF%20Renderer-@react--pdf-black?style=for-the-badge&logo=adobe&logoColor=white" />
