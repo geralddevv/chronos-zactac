@@ -1,5 +1,6 @@
 import { Document, Page, pdf, View, Text } from "@react-pdf/renderer";
 import { generateQR } from "../utils/generateQR";
+import { generateBarcode } from "../utils/generateBarcode";
 import { useState, useEffect, useRef } from "react";
 import { addTrimMarksToPDF } from "../utils/TrimMarksPDFLib";
 import TokenTemplate from "../utils/TokenTemplate";
@@ -131,17 +132,6 @@ const PDFDoc = ({
               alignItems: "flex-end",
             }}
           >
-            <Text
-              style={{
-                fontSize: 18,
-                color: "#000",
-                textAlign: "right",
-                fontWeight: 700,
-                paddingBottom: 4,
-              }}
-            >
-              Lot: {lot} | {code} | Qty: {totalLabels} | SKU No: {job} | Sheet {pageOffset + pIndex + 1}/{totalSheets}
-            </Text>
           </View>
           <View
             style={{
@@ -161,17 +151,6 @@ const PDFDoc = ({
               alignItems: "flex-start",
             }}
           >
-            <Text
-              style={{
-                fontSize: 18,
-                color: "#000",
-                textAlign: "left",
-                fontWeight: 700,
-                paddingTop: 4,
-              }}
-            >
-              Lot: {lot} | {code} | Qty: {totalLabels} | SKU No: {job} | Sheet {pageOffset + pIndex + 1}/{totalSheets}
-            </Text>
           </View>
 
           {pageCoupons.map((coupon, i) => {
@@ -200,6 +179,9 @@ const PDFDoc = ({
                   coupon={coupon}
                   qrCode={qrObj.mainQr}
                   internalQr={qrObj.internalQr}
+                  barcode={qrObj.barcode}
+                  agentNameQr={qrObj.agentNameQr}
+                  fieldBarcodes={qrObj.fieldBarcodes}
                   couponWidthPt={couponWidthPt}
                   couponHeightPt={couponHeightPt}
                   fontSize={5 * fontScale}
@@ -217,6 +199,14 @@ const split = (arr, size) => {
   const out = [];
   for (let i = 0; i < arr.length; i += size) out.push(arr.slice(i, i + size));
   return out;
+};
+
+const getFirstFieldValue = (coupon, keys) => {
+  for (const key of keys) {
+    const value = coupon?.[key];
+    if (value !== null && value !== undefined && value !== "") return value;
+  }
+  return null;
 };
 
 const calculatePerPage = (layout) => {
@@ -251,7 +241,7 @@ export default function GeneratePDF({ coupons, jobMeta, error }) {
   const { resetSignal } = useRefresh();
 
   const qrListRef = useRef([]);
-  // [{ mainQr, internalQr }]
+  // [{ mainQr, internalQr, barcode, fieldBarcodes }]
   const [pdfBlob, setPdfBlob] = useState(null);
 
   const [isReady, setIsReady] = useState(false);
@@ -296,6 +286,17 @@ export default function GeneratePDF({ coupons, jobMeta, error }) {
 
       const batches = split(coupons, 100);
       const temp = [];
+      const barcodeFields = [
+        { label: "PRODUCT", keys: ["PRODUCT BARCODE", "PRODUCT"] },
+        { label: "QUANTITY", keys: ["QUANTITY", "QUANTITY MSI"] },
+        { label: "LENGTH", keys: ["LENGTH"] },
+        { label: "WIDTH", keys: ["WIDTH"] },
+        { label: "CORE ID", keys: ["CORE ID"] },
+        {
+          label: "CUST ORDER",
+          keys: ["ORDER"],
+        },
+      ];
 
       for (let b of batches) {
         for (let coupon of b) {
@@ -314,7 +315,24 @@ export default function GeneratePDF({ coupons, jobMeta, error }) {
             ? await generateQR(coupon["Internal Code"].toString())
             : null;
 
-          temp.push({ mainQr, internalQr });
+          const barcode = coupon["ROLL ID"]
+            ? await generateBarcode(coupon["ROLL ID"])
+            : null;
+
+          const agentNameQr = coupon["AGENT NAME"]
+            ? await generateQR(coupon["AGENT NAME"].toString())
+            : null;
+
+          const fieldBarcodeEntries = await Promise.all(
+            barcodeFields.map(async (field) => {
+              const value = getFirstFieldValue(coupon, field.keys);
+              const fieldBarcode = value ? await generateBarcode(value) : null;
+              return [field.label, fieldBarcode];
+            })
+          );
+          const fieldBarcodes = Object.fromEntries(fieldBarcodeEntries);
+
+          temp.push({ mainQr, internalQr, barcode, agentNameQr, fieldBarcodes });
 
           setProgress(Math.round((temp.length / coupons.length) * 50));
           await new Promise((r) => setTimeout(r, 0));

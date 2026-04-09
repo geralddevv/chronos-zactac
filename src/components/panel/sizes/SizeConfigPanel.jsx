@@ -27,11 +27,23 @@ const SizeConfigPanel = () => {
 
     // Sync initial values
     useEffect(() => {
-        setPaperWidthInput("0");
-        setPaperHeightInput("0");
-        setCouponWidthInput("0");
-        setCouponHeightInput("0");
-    }, []);
+        const toDisplay = (pt, unit) =>
+            unit === "mm"
+                ? cleanNumber(ptToMm(pt))
+                : cleanNumber(pt / 72);
+
+        setPaperWidthInput(toDisplay(layout.values.paperWidthPt, layout.values.paperUnit));
+        setPaperHeightInput(toDisplay(layout.values.paperHeightPt, layout.values.paperUnit));
+        setCouponWidthInput(toDisplay(layout.values.couponWidthPt, layout.values.couponUnit));
+        setCouponHeightInput(toDisplay(layout.values.couponHeightPt, layout.values.couponUnit));
+    }, [
+        layout.values.paperWidthPt,
+        layout.values.paperHeightPt,
+        layout.values.couponWidthPt,
+        layout.values.couponHeightPt,
+        layout.values.paperUnit,
+        layout.values.couponUnit,
+    ]);
 
     // ⭐ Sync values when preset updates
     useEffect(() => {
@@ -43,28 +55,46 @@ const SizeConfigPanel = () => {
         setPaperHeightInput(
             cleanNumber(ptToMm(layout.values.paperHeightPt))
         );
+        setCouponWidthInput(
+            cleanNumber(ptToMm(layout.values.couponWidthPt))
+        );
+        setCouponHeightInput(
+            cleanNumber(ptToMm(layout.values.couponHeightPt))
+        );
 
         layout.set.setPresetUpdate(false);
     }, [
         layout.values.paperWidthPt,
         layout.values.paperHeightPt,
+        layout.values.couponWidthPt,
+        layout.values.couponHeightPt,
         layout.values.presetUpdate
     ]);
 
     useEffect(() => {
-        const { paperWidthPt, paperHeightPt, paperUnit } = layout.values;
+        const { paperWidthPt, paperHeightPt, paperUnit, couponWidthPt, couponHeightPt, couponUnit } = layout.values;
 
-        const toDisplay = (pt) =>
+        const toDisplayPaper = (pt) =>
             paperUnit === "mm"
                 ? cleanNumber(ptToMm(pt))
                 : cleanNumber(pt / 72);
 
-        setPaperWidthInput(toDisplay(paperWidthPt));
-        setPaperHeightInput(toDisplay(paperHeightPt));
+        const toDisplayCoupon = (pt) =>
+            couponUnit === "mm"
+                ? cleanNumber(ptToMm(pt))
+                : cleanNumber(pt / 72);
+
+        setPaperWidthInput(toDisplayPaper(paperWidthPt));
+        setPaperHeightInput(toDisplayPaper(paperHeightPt));
+        setCouponWidthInput(toDisplayCoupon(couponWidthPt));
+        setCouponHeightInput(toDisplayCoupon(couponHeightPt));
     }, [
         layout.values.paperUnit,
         layout.values.paperWidthPt,
         layout.values.paperHeightPt,
+        layout.values.couponUnit,
+        layout.values.couponWidthPt,
+        layout.values.couponHeightPt,
     ]);
 
 

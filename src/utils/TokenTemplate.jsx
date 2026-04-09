@@ -1,71 +1,26 @@
 // components/TokenTemplate.jsx
-import { View, Text, Image, Font } from "@react-pdf/renderer";
-import logo from "../assets/brand-logo.jpg";
-// import staticQr from "../assets/static-qr.png";`
-import TechUseTxt from "../assets/tech-use.png";
+import { View, Text, Image } from "@react-pdf/renderer";
 
-// FONT REGISTRATION MOVED HERE
-let fontsRegistered = false;
-
-if (!fontsRegistered) {
-  Font.register({
-    family: "Montserrat",
-    fonts: [
-      {
-        src: "/fonts/montserrat/Montserrat-Light.ttf",
-        fontWeight: 300,
-      },
-      {
-        src: "/fonts/montserrat/Montserrat-Regular.ttf",
-        fontWeight: 400,
-      },
-      {
-        src: "/fonts/montserrat/Montserrat-SemiBold.ttf",
-        fontWeight: 600,
-      },
-      {
-        src: "/fonts/montserrat/Montserrat-SemiBoldItalic.ttf",
-        fontWeight: 600,
-        fontStyle: "italic",
-      },
-      {
-        src: "/fonts/montserrat/Montserrat-Bold.ttf",
-        fontWeight: 700,
-      },
-    ],
-  });
-
-  fontsRegistered = true;
-}
-
-const wrapTextByWords = (text = "", maxCharsPerLine = 14) => {
+const wrapTextByWords = (text = "", maxCharsPerLine = 16) => {
   if (!text) return "";
 
-  const words = text.trim().split(/\s+/); // handles multiple spaces
+  const words = text.trim().split(/\s+/);
   const lines = [];
   let currentLine = "";
 
   for (const word of words) {
-    // If current line is empty, start with the word
     if (!currentLine) {
       currentLine = word;
       continue;
     }
 
-    // Try adding word to current line
     const nextLine = `${currentLine} ${word}`;
 
     if (nextLine.length <= maxCharsPerLine) {
       currentLine = nextLine;
     } else {
-      // Push only if currentLine has content
       lines.push(currentLine);
-
-      // VERY long single word safeguard (rare, but safe)
-      currentLine =
-        word.length > maxCharsPerLine
-          ? word // keep as-is, don't split unless forced
-          : word;
+      currentLine = word;
     }
   }
 
@@ -74,20 +29,83 @@ const wrapTextByWords = (text = "", maxCharsPerLine = 14) => {
   return lines.join("\n");
 };
 
-
+const getValue = (coupon, key) => {
+  const value = coupon?.[key];
+  if (value === null || value === undefined) return "";
+  return String(value);
+};
 
 const TokenTemplate = ({
   coupon,
-  qrCode,
-  internalQr,
+  barcode,
+  agentNameQr,
+  fieldBarcodes,
   couponWidthPt,
   couponHeightPt,
   fontSize,
 }) => {
-  const headingSize = fontSize * 1.27;
-  const smallText = fontSize * 0.89;
-  const italicLabel = fontSize * 0.91;
-  const valueSize = fontSize * 0.91;
+  const labelSize = fontSize * 0.78;
+  const valueSize = fontSize * 0.96;
+  const headerValue = fontSize * 1.18;
+  const headerLabel = fontSize * 0.78;
+  const barcodeText = fontSize * 0.85;
+  const barcodeHeight = fontSize * 4.6;
+
+  const rows = [
+    ["PRODUCT", "PRODUCT1"],
+    ["ORDER", "PART NO."],
+    ["WIDTH", "LENGTH"],
+    ["SPLICE", "WEIGHT"],
+    ["SLIT ID", "ROLL ID"],
+    ["SLIT BY", "CORE ID"],
+    ["QUANTITY MSI", "PRODUCT BARCODE"],
+  ];
+
+  const textSize = 11;
+  const productText = getValue(coupon, "PRODUCT");
+  const productText2 = getValue(coupon, "PRODUCT1");
+  const labelWidth = 90;
+  const leftPairWidth = labelWidth + 140;
+  const getFirstValue = (keys) => {
+    for (const key of keys) {
+      const value = coupon?.[key];
+      if (value !== null && value !== undefined && value !== "") return String(value);
+    }
+    return "";
+  };
+
+  const tableFields = [
+    { label: "PRODUCT", keys: ["PRODUCT BARCODE", "PRODUCT"] },
+    { label: "QUANTITY", keys: ["QUANTITY", "QUANTITY MSI"] },
+    { label: "LENGTH", keys: ["LENGTH"] },
+    { label: "WIDTH", keys: ["WIDTH"] },
+    { label: "CORE ID", keys: ["CORE ID"] },
+    {
+      label: "CUST ORDER",
+      keys: ["ORDER"],
+    },
+  ];
+
+  const field0 = tableFields[0];
+  const field1 = tableFields[1];
+  const field2 = tableFields[2];
+  const field3 = tableFields[3];
+  const field4 = tableFields[4];
+  const field5 = tableFields[5];
+
+  const value0 = getFirstValue(field0.keys);
+  const value1 = getFirstValue(field1.keys);
+  const value2 = getFirstValue(field2.keys);
+  const value3 = getFirstValue(field3.keys);
+  const value4 = getFirstValue(field4.keys);
+  const value5 = getFirstValue(field5.keys);
+
+  const barcode0 = fieldBarcodes?.[field0.label];
+  const barcode1 = fieldBarcodes?.[field1.label];
+  const barcode2 = fieldBarcodes?.[field2.label];
+  const barcode3 = fieldBarcodes?.[field3.label];
+  const barcode4 = fieldBarcodes?.[field4.label];
+  const barcode5 = fieldBarcodes?.[field5.label];
 
   return (
     <View
@@ -95,189 +113,519 @@ const TokenTemplate = ({
       style={{
         width: couponWidthPt,
         height: couponHeightPt,
-        padding: 5,
-        paddingTop: 6 + 2.835,   // +1mm from top
-        paddingRight: 5 + 2.835,
-        paddingBottom: 8 - 2.835,
-        alignItems: "center",
-        justifyContent: "flex-start",
-        // borderWidth: 0.75,
-        // borderTopWidth: 2,
-        // borderBottomWidth: 2,
-        borderColor: "#000",
         display: "flex",
+        flexDirection: "row",
+        padding: 10,
+        paddingTop: 2,
+        paddingBottom: 5,
+        // backgroundColor: "grey",
       }}
     >
-      <Image src={logo} style={{ width: "70%", marginBottom: 4 }} />
-
-      <Text
-        style={{
-          fontFamily: "Montserrat",
-          fontWeight: 600,
-          fontSize: headingSize,
-          marginBottom: 4,
-          paddingLeft: 1.8,
-          textAlign: "left",
-          width: "100%",
-        }}
-      >
-        Scratch and scan for cashback
-      </Text>
-
       <View
         style={{
-          width: "100%",
-          flexDirection: "row",
-          alignItems: "center",
-          justifyContent: "center",
+          width: 363.959,
+          height: "100%",
+          display: "flex",
+          flexDirection: "column",
+          // backgroundColor: "green",
+          position: "relative",
+          paddingTop: 56,
+          gap: 5,
         }}
       >
-        <View
-          style={{
-            width: "92%",
-            height: "100%",
-            alignItems: "center",
-            justifyContent: "center",
-          }}
-        >
-          {qrCode && (
-            <Image src={qrCode} style={{ width: "96%", margin: 0, padding: 0 }} />
-          )}
+        {!!agentNameQr && (
+          <Image
+            src={agentNameQr}
+            style={{
+              position: "absolute",
+              top: 45,
+              right: 30,
+              width: 36,
+              height: 36,
+            }}
+          />
+        )}
+        <View style={{ flexDirection: "row", gap: 8 }}>
+          <Text
+            style={{
+              width: labelWidth,
+              fontFamily: "Helvetica",
+              fontWeight: 600,
+              fontSize: textSize,
+            }}
+          >
+            AGENT NAME
+          </Text>
+          <Text style={{ fontFamily: "Helvetica", fontWeight: 600, fontSize: textSize }}>
+            {getValue(coupon, "AGENT NAME")}
+          </Text>
         </View>
 
-        <View
-          style={{
-            width: "8%",
-            height: "100%",
-            display: "flex",
-            justifyContent: "center",
-            alignItems: "flex-end",
-          }}
-        >
-          <Image src={TechUseTxt} style={{ width: "60%", margin: 0, padding: 0 }} />
+        <View style={{ flexDirection: "row", gap: 8 }}>
+          <Text
+            style={{
+              width: labelWidth,
+              fontFamily: "Helvetica",
+              fontWeight: 600,
+              fontSize: textSize,
+            }}
+          >
+            CLIENT
+          </Text>
+          <Text style={{ fontFamily: "Helvetica", fontWeight: 600, fontSize: textSize }}>
+            {getValue(coupon, "CUSTOMER")}
+          </Text>
+        </View>
+
+        <View style={{ flexDirection: "row", gap: 8 }}>
+          <Text
+            style={{
+              width: labelWidth,
+              fontFamily: "Helvetica",
+              fontWeight: 600,
+              fontSize: textSize,
+            }}
+          >
+            PRODUCT
+          </Text>
+          <View style={{ flex: 1, gap: 2 }}>
+            <Text
+              style={{
+                fontFamily: "Helvetica",
+                fontWeight: 600,
+                fontSize: textSize,
+              }}
+            >
+              {wrapTextByWords(productText, 40)}
+            </Text>
+            {!!productText2 && (
+              <Text
+                style={{
+                  fontFamily: "Helvetica",
+                  fontWeight: 600,
+                  fontSize: textSize,
+                }}
+              >
+                {wrapTextByWords(productText2, 40)}
+              </Text>
+            )}
+          </View>
+        </View>
+
+        <View style={{ flexDirection: "row", gap: 18 }}>
+          <View style={{ width: 145, flexDirection: "row", gap: 8 }}>
+            <Text
+              style={{
+                width: labelWidth,
+                fontFamily: "Helvetica",
+                fontWeight: 600,
+                fontSize: textSize,
+              }}
+            >
+              ORDER
+            </Text>
+            <Text style={{ fontFamily: "Helvetica", fontWeight: 600, fontSize: textSize }}>
+              {getValue(coupon, "ORDER")}
+            </Text>
+          </View>
+          <View style={{ flexDirection: "row", gap: 6 }}>
+            <Text
+              style={{
+                fontFamily: "Helvetica",
+                fontWeight: 600,
+                fontSize: textSize,
+              }}
+            >
+              PART NO :-
+            </Text>
+            <Text style={{ fontFamily: "Helvetica", fontWeight: 600, fontSize: textSize }}>
+              {getValue(coupon, "PART NO.")}
+            </Text>
+          </View>
+        </View>
+
+        <View style={{ flexDirection: "row", gap: 8 }}>
+          <Text
+            style={{
+              width: labelWidth,
+              fontFamily: "Helvetica",
+              fontWeight: 600,
+              fontSize: textSize,
+            }}
+          >
+            WIDTH
+          </Text>
+          <Text style={{ fontFamily: "Helvetica", fontWeight: 600, fontSize: textSize }}>
+            {getValue(coupon, "WIDTH")}
+          </Text>
+        </View>
+
+        <View style={{ flexDirection: "row", gap: 8 }}>
+          <Text
+            style={{
+              width: labelWidth,
+              fontFamily: "Helvetica",
+              fontWeight: 600,
+              fontSize: textSize,
+            }}
+          >
+            LENGTH
+          </Text>
+          <Text style={{ fontFamily: "Helvetica", fontWeight: 600, fontSize: textSize }}>
+            {getValue(coupon, "LENGTH")}
+          </Text>
+        </View>
+
+        <View style={{ flexDirection: "row", gap: 18 }}>
+          <View style={{ width: 145, flexDirection: "row", gap: 8 }}>
+            <Text
+              style={{
+                width: labelWidth,
+                fontFamily: "Helvetica",
+                fontWeight: 600,
+                fontSize: textSize,
+              }}
+            >
+              SPLICE
+            </Text>
+            <Text style={{ fontFamily: "Helvetica", fontWeight: 600, fontSize: textSize }}>
+              {getValue(coupon, "SPLICE")}
+            </Text>
+          </View>
+          <View style={{ flexDirection: "row", gap: 6 }}>
+            <Text
+              style={{
+                fontFamily: "Helvetica",
+                fontWeight: 600,
+                fontSize: textSize,
+              }}
+            >
+              WEIGHT :-
+            </Text>
+            <Text style={{ fontFamily: "Helvetica", fontWeight: 600, fontSize: textSize }}>
+              {getValue(coupon, "WEIGHT")}
+            </Text>
+          </View>
+        </View>
+
+        <View style={{ flexDirection: "row", gap: 18 }}>
+          <View style={{ width: 145, flexDirection: "row", gap: 8 }}>
+            <Text
+              style={{
+                width: labelWidth,
+                fontFamily: "Helvetica",
+                fontWeight: 600,
+                fontSize: textSize,
+              }}
+            >
+              SLIT ID
+            </Text>
+            <Text style={{ fontFamily: "Helvetica", fontWeight: 600, fontSize: textSize }}>
+              {getValue(coupon, "SLIT ID")}
+            </Text>
+          </View>
+          <View style={{ flexDirection: "row", gap: 6 }}>
+            <Text
+              style={{
+                fontFamily: "Helvetica",
+                fontWeight: 600,
+                fontSize: textSize,
+              }}
+            >
+              SLIT BY :-
+            </Text>
+            <Text style={{ fontFamily: "Helvetica", fontWeight: 600, fontSize: textSize }}>
+              {getValue(coupon, "SLIT BY")}
+            </Text>
+          </View>
+        </View>
+
+        <View style={{ marginTop: "auto", width: "100%" }}>
+          <View style={{ flexDirection: "row", alignItems: "center" }}>
+            <Text
+              style={{
+                width: labelWidth,
+                fontFamily: "Helvetica",
+                fontWeight: 600,
+                fontSize: 16,
+                marginBottom: 8,
+              }}
+            >
+              ROLL ID
+            </Text>
+            <View style={{ flex: 1, alignItems: "center", gap: 1 }}>
+              {!!barcode && (
+                <Image
+                  src={barcode}
+                  style={{ width: "50%", height: 20, objectFit: "fill" }}
+                />
+              )}
+              <Text style={{ fontFamily: "Helvetica", fontWeight: 600, fontSize: 8 }}>
+                {getValue(coupon, "ROLL ID")}
+              </Text>
+            </View>
+          </View>
         </View>
       </View>
-
       <View
         style={{
-          width: "100%",
-          flexDirection: "row",
-          alignItems: "flex-start",
+          width: 188.84,
+          height: "100%",
+          display: "flex",
+          // backgroundColor: "red",
+          flexDirection: "column",
+          position: "relative",
           justifyContent: "center",
-          marginTop: 4,
-          flex: 1,
+          alignItems: "center",
+          overflow: "hidden",
         }}
       >
         <View
           style={{
-            width: "50%",
-            height: "100%",
-            flexDirection: "column",
-            alignItems: "center",
-            justifyContent: "center",
-            paddingRight: 3,
-            paddingLeft: 2,
-            gap: 1,
-            marginRight: 1,
+            width: 250,
+            height: 188.84,
+            transform: "rotate(-90deg)",
           }}
         >
-          <Text
-            style={{
-              fontFamily: "Montserrat",
-              fontWeight: 600,
-              fontSize: smallText,
-            }}
-          >
-            *For Internal use only
-          </Text>
-
-          {internalQr && (
-            <Image src={internalQr} style={{ width: "100%" }} />
-          )}
-        </View>
-
-        <View
-          style={{
-            width: "50%",
-            height: "100%",
-            paddingLeft: 4,
-            paddingRight: 0,
-            flexDirection: "column",
-            alignItems: "flex-start",
-            justifyContent: "center",
-            gap: 3.5,
-          }}
-        >
-          <Text
-            style={{
-              fontFamily: "Montserrat",
-              fontWeight: 700,
-              fontSize: valueSize,
-            }}
-          >
-            <Text
+          <View style={{ flex: 1, flexDirection: "row" }}>
+            <View
               style={{
-                fontFamily: "Montserrat",
-                fontWeight: 600,
-                fontStyle: "italic",
-                fontSize: italicLabel,
+                flex: 1,
+                paddingHorizontal: 6,
+                paddingVertical: 4,
+                justifyContent: "center",
+                alignItems: "flex-start",
+                borderRightWidth: 2,
+                borderTopWidth: 2,
+                borderBottomWidth: 2,
               }}
             >
-              SKU Code
-            </Text>
-            {"\n"}
-            <Text>
-              {(coupon?.["Product Code"] || "").slice(0, 8)}
-              {"\n"}
-              {(coupon?.["Product Code"] || "").slice(8)}
-            </Text>
-          </Text>
-
-          <Text
-            style={{
-              fontFamily: "Montserrat",
-              fontWeight: 700,
-              fontSize: valueSize,
-            }}
-          >
-            <Text
+              <Text style={{ fontFamily: "Helvetica", fontWeight: 600, fontSize: 9, textAlign: "left" }}>
+                {`${field0.label}: ${value0}`}
+              </Text>
+            </View>
+            <View
               style={{
-                fontFamily: "Montserrat",
-                fontWeight: 600,
-                fontStyle: "italic",
-                fontSize: italicLabel,
+                flex: 1,
+                paddingHorizontal: 6,
+                paddingVertical: 4,
+                justifyContent: "center",
+                alignItems: "flex-start",
+                borderTopWidth: 2,
+                borderBottomWidth: 2,
               }}
             >
-              SKU Name
-            </Text>
-            {"\n"}
-            {wrapTextByWords(coupon?.["Product Description"], 14)}
-          </Text>
+              <Text style={{ fontFamily: "Helvetica", fontWeight: 600, fontSize: 9, textAlign: "left" }}>
+                {`${field1.label}: ${value1}`}
+              </Text>
+            </View>
+          </View>
 
-          <Text
-            style={{
-              fontFamily: "Montserrat",
-              fontWeight: 700,
-              fontSize: valueSize,
-            }}
-          >
-            <Text
+          <View style={{ flex: 1, flexDirection: "row" }}>
+            <View
               style={{
-                fontFamily: "Montserrat",
-                fontWeight: 600,
-                fontStyle: "italic",
-                fontSize: italicLabel,
+                flex: 1,
+                paddingHorizontal: 0,
+                paddingVertical: 4,
+                justifyContent: "center",
+                alignItems: "flex-start",
+                borderRightWidth: 2,
+                borderBottomWidth: 2,
               }}
             >
-              Internal Code
-            </Text>
-            {"\n"}
-            <Text>
-              {(coupon?.["Internal Code"] || "").slice(0, 13)}
-              {"\n"}
-              {(coupon?.["Internal Code"] || "").slice(13)}
-            </Text>
-          </Text>
+              {!!barcode0 && (
+                <Image
+                  src={barcode0}
+                  style={{
+                    height: 33.96,
+                    objectFit: "contain",
+                    alignSelf: "flex-start",
+                    marginLeft: 4,
+                  }}
+                />
+              )}
+            </View>
+            <View
+              style={{
+                flex: 1,
+                paddingHorizontal: 0,
+                paddingVertical: 4,
+                justifyContent: "center",
+                alignItems: "flex-start",
+                borderBottomWidth: 2,
+              }}
+            >
+              {!!barcode1 && (
+                <Image
+                  src={barcode1}
+                  style={{
+                    height: 33.96,
+                    objectFit: "contain",
+                    alignSelf: "flex-start",
+                    marginLeft: 4,
+                  }}
+                />
+              )}
+            </View>
+          </View>
+
+          <View style={{ flex: 1, flexDirection: "row" }}>
+            <View
+              style={{
+                flex: 1,
+                paddingHorizontal: 6,
+                paddingVertical: 4,
+                justifyContent: "center",
+                alignItems: "flex-start",
+                borderRightWidth: 2,
+                borderBottomWidth: 2,
+              }}
+            >
+              <Text style={{ fontFamily: "Helvetica", fontWeight: 600, fontSize: 9, textAlign: "left" }}>
+                {`${field2.label}: ${value2}`}
+              </Text>
+            </View>
+            <View
+              style={{
+                flex: 1,
+                paddingHorizontal: 6,
+                paddingVertical: 4,
+                justifyContent: "center",
+                alignItems: "flex-start",
+                borderBottomWidth: 2,
+              }}
+            >
+              <Text style={{ fontFamily: "Helvetica", fontWeight: 600, fontSize: 9, textAlign: "left" }}>
+                {`${field3.label}: ${value3}`}
+              </Text>
+            </View>
+          </View>
+
+          <View style={{ flex: 1, flexDirection: "row" }}>
+            <View
+              style={{
+                flex: 1,
+                paddingHorizontal: 0,
+                paddingVertical: 4,
+                justifyContent: "center",
+                alignItems: "flex-start",
+                borderRightWidth: 2,
+                borderBottomWidth: 2,
+              }}
+            >
+              {!!barcode2 && (
+                <Image
+                  src={barcode2}
+                  style={{
+                    height: 33.96,
+                    objectFit: "contain",
+                    alignSelf: "flex-start",
+                    marginLeft: 4,
+                  }}
+                />
+              )}
+            </View>
+            <View
+              style={{
+                flex: 1,
+                paddingHorizontal: 0,
+                paddingVertical: 4,
+                justifyContent: "center",
+                alignItems: "flex-start",
+                borderBottomWidth: 2,
+              }}
+            >
+              {!!barcode3 && (
+                <Image
+                  src={barcode3}
+                  style={{
+                    height: 33.96,
+                    objectFit: "contain",
+                    alignSelf: "flex-start",
+                    marginLeft: 4,
+                  }}
+                />
+              )}
+            </View>
+          </View>
+
+          <View style={{ flex: 1, flexDirection: "row" }}>
+            <View
+              style={{
+                flex: 1,
+                paddingHorizontal: 6,
+                paddingVertical: 4,
+                justifyContent: "center",
+                alignItems: "flex-start",
+                borderRightWidth: 2,
+                borderBottomWidth: 2,
+              }}
+            >
+              <Text style={{ fontFamily: "Helvetica", fontWeight: 600, fontSize: 9, textAlign: "left" }}>
+                {`${field4.label}: ${value4}`}
+              </Text>
+            </View>
+            <View
+              style={{
+                flex: 1,
+                paddingHorizontal: 6,
+                paddingVertical: 4,
+                justifyContent: "center",
+                alignItems: "flex-start",
+                borderBottomWidth: 2,
+              }}
+            >
+              <Text style={{ fontFamily: "Helvetica", fontWeight: 600, fontSize: 9, textAlign: "left" }}>
+                {`${field5.label}: ${value5}`}
+              </Text>
+            </View>
+          </View>
+
+          <View style={{ flex: 1, flexDirection: "row" }}>
+            <View
+              style={{
+                flex: 1,
+                paddingHorizontal: 0,
+                paddingVertical: 4,
+                justifyContent: "center",
+                alignItems: "flex-start",
+                borderRightWidth: 2,
+              }}
+            >
+              {!!barcode4 && (
+                <Image
+                  src={barcode4}
+                  style={{
+                    height: 33.96,
+                    objectFit: "contain",
+                    alignSelf: "flex-start",
+                    marginLeft: 4,
+                  }}
+                />
+              )}
+            </View>
+            <View
+              style={{
+                flex: 1,
+                paddingHorizontal: 0,
+                paddingVertical: 4,
+                justifyContent: "center",
+                alignItems: "flex-start",
+              }}
+            >
+              {!!barcode5 && (
+                <Image
+                  src={barcode5}
+                  style={{
+                    height: 33.96,
+                    objectFit: "contain",
+                    alignSelf: "flex-start",
+                    marginLeft: 4,
+                  }}
+                />
+              )}
+            </View>
+          </View>
         </View>
       </View>
     </View>

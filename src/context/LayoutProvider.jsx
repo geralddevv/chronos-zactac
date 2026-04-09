@@ -4,17 +4,21 @@ import { createContext, useContext, useState } from "react";
 const LayoutContext = createContext();
 
 export const LayoutProvider = ({ children }) => {
+  const MM_TO_PT = 2.834645669;
+  const DEFAULT_WIDTH_MM = 202;
+  const DEFAULT_HEIGHT_MM = 90;
+
   // Units
   const [paperUnit, setPaperUnit] = useState("mm");
   const [couponUnit, setCouponUnit] = useState("mm");
 
   // Papers
-  const [paperWidthPt, setPaperWidthPt] = useState(0);
-  const [paperHeightPt, setPaperHeightPt] = useState(0);
+  const [paperWidthPt, setPaperWidthPt] = useState(DEFAULT_WIDTH_MM * MM_TO_PT);
+  const [paperHeightPt, setPaperHeightPt] = useState(DEFAULT_HEIGHT_MM * MM_TO_PT);
 
   // Coupons
-  const [couponWidthPt, setCouponWidthPt] = useState(0);
-  const [couponHeightPt, setCouponHeightPt] = useState(0);
+  const [couponWidthPt, setCouponWidthPt] = useState(DEFAULT_WIDTH_MM * MM_TO_PT);
+  const [couponHeightPt, setCouponHeightPt] = useState(DEFAULT_HEIGHT_MM * MM_TO_PT);
 
   // Orientation
   const [orientation, setOrientation] = useState("portrait");
@@ -29,8 +33,6 @@ export const LayoutProvider = ({ children }) => {
   const [bottomMargin, setBottomMargin] = useState(0);
 
   // Gaps
-  const MM_TO_PT = 2.834645669;
-
   const [gapXPt, setGapXPt] = useState(0 * MM_TO_PT);
   const [gapYPt, setGapYPt] = useState(0 * MM_TO_PT);
 
