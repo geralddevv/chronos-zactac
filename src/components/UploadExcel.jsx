@@ -8,7 +8,7 @@ import { useLayout } from "../context/LayoutProvider";
 import { parseJobMetaFromFileName } from "../utils/parseJobMetaFromFileName";
 
 
-export default function UploadExcel({ resetSignal, setCoupons, hasCoupons, couponsLength, coupons }) {
+export default function UploadExcel({ resetSignal, setLabels, hasLabels, labelsLength, labels }) {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(null);
   const [uploadedFileName, setUploadedFileName] = useState("");
@@ -28,8 +28,8 @@ export default function UploadExcel({ resetSignal, setCoupons, hasCoupons, coupo
   const {
     paperWidthPt,
     paperHeightPt,
-    couponWidthPt,
-    couponHeightPt,
+    labelWidthPt,
+    labelHeightPt,
   } = values;
 
   const parseExcelFile = useCallback(async (file) => {
@@ -80,7 +80,7 @@ export default function UploadExcel({ resetSignal, setCoupons, hasCoupons, coupo
 
     if (!file.name.match(/\.(xlsx|xls)$/i)) {
       setError("Please upload a valid file (.xlsx)");
-      setCoupons([]);
+      setLabels([]);
       setUploadedFileName("");
       if (fileInputRef.current) fileInputRef.current.value = "";
       return;
@@ -96,23 +96,23 @@ export default function UploadExcel({ resetSignal, setCoupons, hasCoupons, coupo
       const meta = parseJobMetaFromFileName(file.name);
       setJobMeta(meta);
 
-      setCoupons(data);
+      setLabels(data);
 
     } catch (err) {
       setError(err.message);
-      setCoupons([]);
+      setLabels([]);
       setUploadedFileName("");
       if (fileInputRef.current) fileInputRef.current.value = "";
     } finally {
       setIsLoading(false);
     }
-  }, [parseExcelFile, setCoupons]);
+  }, [parseExcelFile, setLabels]);
 
   // RESET FIX
   useEffect(() => {
     if (resetSignal) {
       if (fileInputRef.current) fileInputRef.current.value = "";
-      setCoupons([]);
+      setLabels([]);
       setError(null);
       setUploadedFileName("");
     }
@@ -120,9 +120,9 @@ export default function UploadExcel({ resetSignal, setCoupons, hasCoupons, coupo
 
   const checkSizesBeforeUpload = (e) => {
     const noPaper = !paperWidthPt || !paperHeightPt;
-    const noCoupon = !couponWidthPt || !couponHeightPt;
+    const noLabel = !labelWidthPt || !labelHeightPt;
 
-    if (noPaper && noCoupon) {
+    if (noPaper && noLabel) {
       e.preventDefault();
       triggerToast("Please set page and label size");
       return true;
@@ -134,9 +134,9 @@ export default function UploadExcel({ resetSignal, setCoupons, hasCoupons, coupo
       return true;
     }
 
-    if (noCoupon) {
+    if (noLabel) {
       e.preventDefault();
-      triggerToast("Please set a coupon size");
+      triggerToast("Please set a label size");
       return true;
     }
 
@@ -159,10 +159,10 @@ export default function UploadExcel({ resetSignal, setCoupons, hasCoupons, coupo
           onChange={handleFile}
         />
 
-        {!error && hasCoupons && (
+        {!error && hasLabels && (
           <div className="w-full flex justify-start items-center px-2">
             <h1 className="text-[14px] text-nero-300">
-              {couponsLength} Coupon{couponsLength !== 1 ? "s" : ""}
+              {labelsLength} Label{labelsLength !== 1 ? "s" : ""}
             </h1>
           </div>
         )}
@@ -176,7 +176,7 @@ export default function UploadExcel({ resetSignal, setCoupons, hasCoupons, coupo
 
       <ErrorBoundary>
         <GeneratePDF
-          coupons={coupons}
+          labels={labels}
           jobMeta={jobMeta}
           uploadedFileName={uploadedFileName}
           key={resetSignal}

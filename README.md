@@ -1,5 +1,5 @@
 # **Chronos**
-### High-Performance Coupon Generation Engine
+### High-Performance Label Generation Engine
 
 <div align="left">
   <img src="https://img.shields.io/badge/Build-Passing-brightgreen?style=for-the-badge" />
@@ -10,14 +10,14 @@
 
 <br/>
 
-**Chronos** is a production-grade PDF generation engine built to create thousands of printable coupon tokens with embedded QR codes, dynamic layouts, and pixel-perfect typography.  
+**Chronos** is a production-grade PDF generation engine built to create thousands of printable label tokens with embedded QR codes, dynamic layouts, and pixel-perfect typography.  
 Engineered for **speed**, **precision**, and **print-shop reliability**.
 
 ---
 
 ## Features
 
-### 🔹 Smart Coupon Layout Engine
+### 🔹 Smart Label Layout Engine
 - Automatically calculates rows, columns, and margins  
 - Compatible with any paper size  
 - Maintains perfect alignment across all pages  

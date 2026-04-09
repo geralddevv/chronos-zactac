@@ -4,17 +4,17 @@ export function computeAutoMargins(layout) {
   const {
     paperWidthPt,
     paperHeightPt,
-    couponWidthPt,
-    couponHeightPt,
+    labelWidthPt,
+    labelHeightPt,
   } = layout.values;
 
-  if (!paperWidthPt || !paperHeightPt || !couponWidthPt || !couponHeightPt) return;
+  if (!paperWidthPt || !paperHeightPt || !labelWidthPt || !labelHeightPt) return;
 
-  const cols = Math.floor(paperWidthPt / couponWidthPt);
-  const rows = Math.floor(paperHeightPt / couponHeightPt);
+  const cols = Math.floor(paperWidthPt / labelWidthPt);
+  const rows = Math.floor(paperHeightPt / labelHeightPt);
 
-  const usedW = cols * couponWidthPt;
-  const usedH = rows * couponHeightPt;
+  const usedW = cols * labelWidthPt;
+  const usedH = rows * labelHeightPt;
 
   let marginX = Math.max(0, (paperWidthPt - usedW) / 2);
   let marginY = Math.max(0, (paperHeightPt - usedH) / 2);

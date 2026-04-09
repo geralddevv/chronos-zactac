@@ -5,9 +5,9 @@ import Orientation from "./ui/Orientation";
 import UploadExcel from "./UploadExcel";
 
 const Panel = () => {
-  const { coupons, setCoupons, resetSignal } = useRefresh();
+  const { labels, setLabels, resetSignal } = useRefresh();
 
-  const hasCoupons = coupons.length > 0;
+  const hasLabels = labels.length > 0;
 
   return (
     <>
@@ -23,11 +23,11 @@ const Panel = () => {
           <MarginConfigPanel />
           <Orientation />
           <UploadExcel
-            setCoupons={setCoupons}
+            setLabels={setLabels}
             resetSignal={resetSignal}
-            hasCoupons={hasCoupons}
-            couponsLength={coupons.length}
-            coupons={coupons}
+            hasLabels={hasLabels}
+            labelsLength={labels.length}
+            labels={labels}
           />
         </div>
       </div>

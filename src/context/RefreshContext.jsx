@@ -3,19 +3,19 @@ import { createContext, useContext, useState, useCallback } from "react";
 const RefreshContext = createContext();
 
 export const RefreshProvider = ({ children }) => {
-  const [coupons, setCoupons] = useState([]);
+  const [labels, setLabels] = useState([]);
   const [resetSignal, setResetSignal] = useState(false);
 
   const handleRefresh = useCallback(() => {
-    setCoupons([]);
+    setLabels([]);
     setResetSignal(Math.random()); // always unique key
   }, []);
 
   return (
     <RefreshContext.Provider
       value={{
-        coupons,
-        setCoupons,
+        labels,
+        setLabels,
         resetSignal,
         handleRefresh,
       }}

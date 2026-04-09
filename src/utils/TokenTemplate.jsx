@@ -29,8 +29,8 @@ const wrapTextByWords = (text = "", maxCharsPerLine = 16) => {
   return lines.join("\n");
 };
 
-const getValue = (coupon, key) => {
-  const value = coupon?.[key];
+const getValue = (label, key) => {
+  const value = label?.[key];
   if (value === null || value === undefined) return "";
   return String(value);
 };
@@ -49,12 +49,12 @@ const formatCurrentDateTime = () => {
 };
 
 const TokenTemplate = ({
-  coupon,
+  label,
   barcode,
   agentNameQr,
   fieldBarcodes,
-  couponWidthPt,
-  couponHeightPt,
+  labelWidthPt,
+  labelHeightPt,
   fontSize,
 }) => {
   const labelSize = fontSize * 0.78;
@@ -75,13 +75,13 @@ const TokenTemplate = ({
   ];
 
   const textSize = 11;
-  const productText = getValue(coupon, "PRODUCT");
-  const productText2 = getValue(coupon, "PRODUCT1");
+  const productText = getValue(label, "PRODUCT");
+  const productText2 = getValue(label, "PRODUCT1");
   const labelWidth = 90;
   const leftPairWidth = labelWidth + 140;
   const getFirstValue = (keys) => {
     for (const key of keys) {
-      const value = coupon?.[key];
+      const value = label?.[key];
       if (value !== null && value !== undefined && value !== "") return String(value);
     }
     return "";
@@ -128,8 +128,8 @@ const TokenTemplate = ({
     <View
       wrap={false}
       style={{
-        width: couponWidthPt,
-        height: couponHeightPt,
+        width: labelWidthPt,
+        height: labelHeightPt,
         display: "flex",
         flexDirection: "row",
         padding: 10,
@@ -174,7 +174,7 @@ const TokenTemplate = ({
             AGENT NAME
           </Text>
           <Text style={{ fontFamily: "Helvetica", fontWeight: 600, fontSize: textSize }}>
-            {getValue(coupon, "AGENT NAME")}
+            {getValue(label, "AGENT NAME")}
           </Text>
         </View>
 
@@ -190,7 +190,7 @@ const TokenTemplate = ({
             CLIENT
           </Text>
           <Text style={{ fontFamily: "Helvetica", fontWeight: 600, fontSize: textSize }}>
-            {getValue(coupon, "CUSTOMER")}
+            {getValue(label, "CUSTOMER")}
           </Text>
         </View>
 
@@ -242,7 +242,7 @@ const TokenTemplate = ({
               ORDER
             </Text>
             <Text style={{ fontFamily: "Helvetica", fontWeight: 600, fontSize: textSize }}>
-              {getValue(coupon, "ORDER")}
+              {getValue(label, "ORDER")}
             </Text>
           </View>
           <View style={{ flexDirection: "row", gap: 6 }}>
@@ -256,7 +256,7 @@ const TokenTemplate = ({
               PART NO :-
             </Text>
             <Text style={{ fontFamily: "Helvetica", fontWeight: 600, fontSize: textSize }}>
-              {getValue(coupon, "PART NO.")}
+              {getValue(label, "PART NO.")}
             </Text>
           </View>
         </View>
@@ -273,7 +273,7 @@ const TokenTemplate = ({
             WIDTH
           </Text>
           <Text style={{ fontFamily: "Helvetica", fontWeight: 600, fontSize: textSize }}>
-            {getValue(coupon, "WIDTH")}
+            {getValue(label, "WIDTH")}
           </Text>
         </View>
 
@@ -289,7 +289,7 @@ const TokenTemplate = ({
             LENGTH
           </Text>
           <Text style={{ fontFamily: "Helvetica", fontWeight: 600, fontSize: textSize }}>
-            {getValue(coupon, "LENGTH")}
+            {getValue(label, "LENGTH")}
           </Text>
         </View>
 
@@ -306,7 +306,7 @@ const TokenTemplate = ({
               SPLICE
             </Text>
             <Text style={{ fontFamily: "Helvetica", fontWeight: 600, fontSize: textSize }}>
-              {getValue(coupon, "SPLICE")}
+              {getValue(label, "SPLICE")}
             </Text>
           </View>
           <View style={{ flexDirection: "row", gap: 6 }}>
@@ -320,7 +320,7 @@ const TokenTemplate = ({
               WEIGHT :-
             </Text>
             <Text style={{ fontFamily: "Helvetica", fontWeight: 600, fontSize: textSize }}>
-              {getValue(coupon, "WEIGHT")}
+              {getValue(label, "WEIGHT")}
             </Text>
           </View>
         </View>
@@ -338,7 +338,7 @@ const TokenTemplate = ({
               SLIT ID
             </Text>
             <Text style={{ fontFamily: "Helvetica", fontWeight: 600, fontSize: textSize }}>
-              {getValue(coupon, "SLIT ID")}
+              {getValue(label, "SLIT ID")}
             </Text>
           </View>
           <View style={{ flexDirection: "row", gap: 6 }}>
@@ -352,7 +352,7 @@ const TokenTemplate = ({
               SLIT BY :-
             </Text>
             <Text style={{ fontFamily: "Helvetica", fontWeight: 600, fontSize: textSize }}>
-              {getValue(coupon, "SLIT BY")}
+              {getValue(label, "SLIT BY")}
             </Text>
             <Text
               style={{
@@ -388,7 +388,7 @@ const TokenTemplate = ({
                 />
               )}
               <Text style={{ fontFamily: "Helvetica", fontWeight: 600, fontSize: 8 }}>
-                {getValue(coupon, "ROLL ID")}
+                {getValue(label, "ROLL ID")}
               </Text>
             </View>
           </View>

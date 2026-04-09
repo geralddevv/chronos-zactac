@@ -22,8 +22,8 @@ const SizeConfigPanel = () => {
     // PURE INPUTS
     const [paperWidthInput, setPaperWidthInput] = useState("");
     const [paperHeightInput, setPaperHeightInput] = useState("");
-    const [couponWidthInput, setCouponWidthInput] = useState("");
-    const [couponHeightInput, setCouponHeightInput] = useState("");
+    const [labelWidthInput, setLabelWidthInput] = useState("");
+    const [labelHeightInput, setLabelHeightInput] = useState("");
 
     // Sync initial values
     useEffect(() => {
@@ -34,15 +34,15 @@ const SizeConfigPanel = () => {
 
         setPaperWidthInput(toDisplay(layout.values.paperWidthPt, layout.values.paperUnit));
         setPaperHeightInput(toDisplay(layout.values.paperHeightPt, layout.values.paperUnit));
-        setCouponWidthInput(toDisplay(layout.values.couponWidthPt, layout.values.couponUnit));
-        setCouponHeightInput(toDisplay(layout.values.couponHeightPt, layout.values.couponUnit));
+        setLabelWidthInput(toDisplay(layout.values.labelWidthPt, layout.values.labelUnit));
+        setLabelHeightInput(toDisplay(layout.values.labelHeightPt, layout.values.labelUnit));
     }, [
         layout.values.paperWidthPt,
         layout.values.paperHeightPt,
-        layout.values.couponWidthPt,
-        layout.values.couponHeightPt,
+        layout.values.labelWidthPt,
+        layout.values.labelHeightPt,
         layout.values.paperUnit,
-        layout.values.couponUnit,
+        layout.values.labelUnit,
     ]);
 
     // ⭐ Sync values when preset updates
@@ -55,46 +55,46 @@ const SizeConfigPanel = () => {
         setPaperHeightInput(
             cleanNumber(ptToMm(layout.values.paperHeightPt))
         );
-        setCouponWidthInput(
-            cleanNumber(ptToMm(layout.values.couponWidthPt))
+        setLabelWidthInput(
+            cleanNumber(ptToMm(layout.values.labelWidthPt))
         );
-        setCouponHeightInput(
-            cleanNumber(ptToMm(layout.values.couponHeightPt))
+        setLabelHeightInput(
+            cleanNumber(ptToMm(layout.values.labelHeightPt))
         );
 
         layout.set.setPresetUpdate(false);
     }, [
         layout.values.paperWidthPt,
         layout.values.paperHeightPt,
-        layout.values.couponWidthPt,
-        layout.values.couponHeightPt,
+        layout.values.labelWidthPt,
+        layout.values.labelHeightPt,
         layout.values.presetUpdate
     ]);
 
     useEffect(() => {
-        const { paperWidthPt, paperHeightPt, paperUnit, couponWidthPt, couponHeightPt, couponUnit } = layout.values;
+        const { paperWidthPt, paperHeightPt, paperUnit, labelWidthPt, labelHeightPt, labelUnit } = layout.values;
 
         const toDisplayPaper = (pt) =>
             paperUnit === "mm"
                 ? cleanNumber(ptToMm(pt))
                 : cleanNumber(pt / 72);
 
-        const toDisplayCoupon = (pt) =>
-            couponUnit === "mm"
+        const toDisplayLabel = (pt) =>
+            labelUnit === "mm"
                 ? cleanNumber(ptToMm(pt))
                 : cleanNumber(pt / 72);
 
         setPaperWidthInput(toDisplayPaper(paperWidthPt));
         setPaperHeightInput(toDisplayPaper(paperHeightPt));
-        setCouponWidthInput(toDisplayCoupon(couponWidthPt));
-        setCouponHeightInput(toDisplayCoupon(couponHeightPt));
+        setLabelWidthInput(toDisplayLabel(labelWidthPt));
+        setLabelHeightInput(toDisplayLabel(labelHeightPt));
     }, [
         layout.values.paperUnit,
         layout.values.paperWidthPt,
         layout.values.paperHeightPt,
-        layout.values.couponUnit,
-        layout.values.couponWidthPt,
-        layout.values.couponHeightPt,
+        layout.values.labelUnit,
+        layout.values.labelWidthPt,
+        layout.values.labelHeightPt,
     ]);
 
 
@@ -126,23 +126,23 @@ const SizeConfigPanel = () => {
         handleRefresh();
     };
 
-    const handleCouponWidthChange = (val) => {
-        setCouponWidthInput(val);
+    const handleLabelWidthChange = (val) => {
+        setLabelWidthInput(val);
         const n = Number(val);
         if (!isNaN(n)) {
-            const pt = layout.values.couponUnit === "mm" ? mmToPt(n) : inToPt(n);
-            layout.set.setCouponWidthPt(pt);
+            const pt = layout.values.labelUnit === "mm" ? mmToPt(n) : inToPt(n);
+            layout.set.setLabelWidthPt(pt);
             layout.set.setFontScale(pt / 120);
         }
         handleRefresh();
     };
 
-    const handleCouponHeightChange = (val) => {
-        setCouponHeightInput(val);
+    const handleLabelHeightChange = (val) => {
+        setLabelHeightInput(val);
         const n = Number(val);
         if (!isNaN(n)) {
-            const pt = layout.values.couponUnit === "mm" ? mmToPt(n) : inToPt(n);
-            layout.set.setCouponHeightPt(pt);
+            const pt = layout.values.labelUnit === "mm" ? mmToPt(n) : inToPt(n);
+            layout.set.setLabelHeightPt(pt);
         }
         handleRefresh();
     };
@@ -163,20 +163,20 @@ const SizeConfigPanel = () => {
         handleRefresh();
     };
 
-    const handleCouponUnitChange = (newUnit) => {
-        layout.set.setCouponUnit(newUnit);
+    const handleLabelUnitChange = (newUnit) => {
+        layout.set.setLabelUnit(newUnit);
 
-        const w = Number(couponWidthInput);
-        const h = Number(couponHeightInput);
+        const w = Number(labelWidthInput);
+        const h = Number(labelHeightInput);
 
         if (!isNaN(w)) {
             const pt = newUnit === "mm" ? mmToPt(w) : inToPt(w);
-            layout.set.setCouponWidthPt(pt);
+            layout.set.setLabelWidthPt(pt);
             layout.set.setFontScale(pt / 120);
         }
 
         if (!isNaN(h)) {
-            layout.set.setCouponHeightPt(newUnit === "mm" ? mmToPt(h) : inToPt(h));
+            layout.set.setLabelHeightPt(newUnit === "mm" ? mmToPt(h) : inToPt(h));
         }
 
         handleRefresh();
@@ -212,17 +212,17 @@ const SizeConfigPanel = () => {
                 <div className="w-full flex items-center gap-2">
                     <SizeInput
                         label="Width"
-                        value={couponWidthInput}
-                        onValueChange={handleCouponWidthChange}
+                        value={labelWidthInput}
+                        onValueChange={handleLabelWidthChange}
                     />
                     <SizeInput
                         label="Height"
-                        value={couponHeightInput}
-                        onValueChange={handleCouponHeightChange}
+                        value={labelHeightInput}
+                        onValueChange={handleLabelHeightChange}
                     />
                     <UnitSelector
-                        value={layout.values.couponUnit}
-                        onChange={handleCouponUnitChange}
+                        value={layout.values.labelUnit}
+                        onChange={handleLabelUnitChange}
                     />
                 </div>
             </div>

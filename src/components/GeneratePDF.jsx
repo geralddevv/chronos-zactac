@@ -13,34 +13,34 @@ import Toast from "../utils/Toast";
 
 import { AnimatePresence, motion } from "framer-motion";
 
-// COUPON GAPS (print units: points)
+// LABEL GAPS (print units: points)
 
 function computeAutoMargins(layout) {
   const {
     paperWidthPt,
     paperHeightPt,
-    couponWidthPt,
-    couponHeightPt,
+    labelWidthPt,
+    labelHeightPt,
   } = layout.values;
 
-  if (!paperWidthPt || !paperHeightPt || !couponWidthPt || !couponHeightPt)
+  if (!paperWidthPt || !paperHeightPt || !labelWidthPt || !labelHeightPt)
     return;
 
   const { gapXPt, gapYPt } = layout.values;
 
   const cols = Math.floor(
-    (paperWidthPt + gapXPt) / (couponWidthPt + gapXPt)
+    (paperWidthPt + gapXPt) / (labelWidthPt + gapXPt)
   );
 
   const rows = Math.floor(
-    (paperHeightPt + gapYPt) / (couponHeightPt + gapYPt)
+    (paperHeightPt + gapYPt) / (labelHeightPt + gapYPt)
   );
 
   const usedW =
-    cols * couponWidthPt + Math.max(0, cols - 1) * gapXPt;
+    cols * labelWidthPt + Math.max(0, cols - 1) * gapXPt;
 
   const usedH =
-    rows * couponHeightPt + Math.max(0, rows - 1) * gapYPt;
+    rows * labelHeightPt + Math.max(0, rows - 1) * gapYPt;
 
 
   let marginX = Math.max(0, (paperWidthPt - usedW) / 2);
@@ -58,7 +58,7 @@ function computeAutoMargins(layout) {
 }
 
 const PDFDoc = ({
-  coupons,
+  labels,
   qrList,
   layout,
   pageOffset,
@@ -74,8 +74,8 @@ const PDFDoc = ({
   const {
     paperWidthPt,
     paperHeightPt,
-    couponWidthPt,
-    couponHeightPt,
+    labelWidthPt,
+    labelHeightPt,
     leftMargin,
     rightMargin,
     topMargin,
@@ -90,24 +90,24 @@ const PDFDoc = ({
 
   const columns = Math.max(
     1,
-    Math.floor((usableW + gapXPt) / (couponWidthPt + gapXPt))
+    Math.floor((usableW + gapXPt) / (labelWidthPt + gapXPt))
   );
 
   const rows = Math.max(
     1,
-    Math.floor((usableH + gapYPt) / (couponHeightPt + gapYPt))
+    Math.floor((usableH + gapYPt) / (labelHeightPt + gapYPt))
   );
 
   const perPage = columns * rows;
 
   const pages = [];
-  for (let i = 0; i < coupons.length; i += perPage) {
-    pages.push(coupons.slice(i, i + perPage));
+  for (let i = 0; i < labels.length; i += perPage) {
+    pages.push(labels.slice(i, i + perPage));
   }
 
   return (
     <Document>
-      {pages.map((pageCoupons, pIndex) => (
+      {pages.map((pageLabels, pIndex) => (
         <Page
           key={pIndex}
           size={{ width: paperWidthPt, height: paperHeightPt }}
@@ -152,13 +152,13 @@ const PDFDoc = ({
           >
           </View>
 
-          {pageCoupons.map((coupon, i) => {
+          {pageLabels.map((label, i) => {
             const globalIndex = pIndex * perPage + i;
             const row = Math.floor(i / columns);
             const col = i % columns;
 
-            const x = leftMargin + col * (couponWidthPt + gapXPt);
-            const y = topMargin + row * (couponHeightPt + gapYPt);
+            const x = leftMargin + col * (labelWidthPt + gapXPt);
+            const y = topMargin + row * (labelHeightPt + gapYPt);
 
             const qrObj = qrList[globalIndex] || {};
 
@@ -169,20 +169,20 @@ const PDFDoc = ({
                   position: "absolute",
                   left: x,
                   top: y,
-                  width: couponWidthPt,
-                  height: couponHeightPt,
+                  width: labelWidthPt,
+                  height: labelHeightPt,
                 }}
               >
 
                 <TokenTemplate
-                  coupon={coupon}
+                  label={label}
                   qrCode={qrObj.mainQr}
                   internalQr={qrObj.internalQr}
                   barcode={qrObj.barcode}
                   agentNameQr={qrObj.agentNameQr}
                   fieldBarcodes={qrObj.fieldBarcodes}
-                  couponWidthPt={couponWidthPt}
-                  couponHeightPt={couponHeightPt}
+                  labelWidthPt={labelWidthPt}
+                  labelHeightPt={labelHeightPt}
                   fontSize={5 * fontScale}
                 />
               </View>
@@ -200,16 +200,16 @@ const split = (arr, size) => {
   return out;
 };
 
-const getFirstFieldValue = (coupon, keys) => {
+const getFirstFieldValue = (label, keys) => {
   for (const key of keys) {
-    const value = coupon?.[key];
+    const value = label?.[key];
     if (value !== null && value !== undefined && value !== "") return value;
   }
   return null;
 };
 
-const getCouponTextValue = (coupon, key) => {
-  const value = coupon?.[key];
+const getLabelTextValue = (label, key) => {
+  const value = label?.[key];
   if (value === null || value === undefined) return "";
   return String(value).trim();
 };
@@ -218,8 +218,8 @@ const calculatePerPage = (layout) => {
   const {
     paperWidthPt,
     paperHeightPt,
-    couponWidthPt,
-    couponHeightPt,
+    labelWidthPt,
+    labelHeightPt,
     leftMargin,
     rightMargin,
     topMargin,
@@ -232,17 +232,17 @@ const calculatePerPage = (layout) => {
   const usableH = paperHeightPt - topMargin - bottomMargin;
 
   const cols = Math.floor(
-    (usableW + gapXPt) / (couponWidthPt + gapXPt)
+    (usableW + gapXPt) / (labelWidthPt + gapXPt)
   );
 
   const rows = Math.floor(
-    (usableH + gapYPt) / (couponHeightPt + gapYPt)
+    (usableH + gapYPt) / (labelHeightPt + gapYPt)
   );
 
   return cols * rows;
 };
 
-export default function GeneratePDF({ coupons, jobMeta, uploadedFileName, error }) {
+export default function GeneratePDF({ labels, jobMeta, uploadedFileName, error }) {
   const { resetSignal } = useRefresh();
 
   const qrListRef = useRef([]);
@@ -274,8 +274,8 @@ export default function GeneratePDF({ coupons, jobMeta, uploadedFileName, error 
   }, [
     layout.values.paperWidthPt,
     layout.values.paperHeightPt,
-    layout.values.couponWidthPt,
-    layout.values.couponHeightPt,
+    layout.values.labelWidthPt,
+    layout.values.labelHeightPt,
     layout.values.gapXPt,
     layout.values.gapYPt,
     layout.values.userMarginOverride,
@@ -284,12 +284,12 @@ export default function GeneratePDF({ coupons, jobMeta, uploadedFileName, error 
   // QR GENERATION (optimized)
   useEffect(() => {
     const run = async () => {
-      if (!coupons.length) return;
+      if (!labels.length) return;
 
       setProgress(0);
       setPhase("qr");
 
-      const batches = split(coupons, 100);
+      const batches = split(labels, 100);
       const temp = [];
       const barcodeFields = [
         { label: "PRODUCT", keys: ["PRODUCT BARCODE", "PRODUCT"] },
@@ -304,11 +304,11 @@ export default function GeneratePDF({ coupons, jobMeta, uploadedFileName, error 
       ];
 
       for (let b of batches) {
-        for (let coupon of b) {
+        for (let label of b) {
           const qrValue =
-            coupon.qrCode !== undefined
-              ? coupon.qrCode
-              : coupon["Code URL"];
+            label.qrCode !== undefined
+              ? label.qrCode
+              : label["Code URL"];
 
           const mainQr =
             qrValue !== undefined && qrValue !== null && qrValue !== ""
@@ -316,32 +316,32 @@ export default function GeneratePDF({ coupons, jobMeta, uploadedFileName, error 
               : null;
 
 
-          const internalQr = coupon["Internal Code"]
-            ? await generateQR(coupon["Internal Code"].toString())
+          const internalQr = label["Internal Code"]
+            ? await generateQR(label["Internal Code"].toString())
             : null;
 
-          const barcode = coupon["ROLL ID"]
-            ? await generateBarcode(coupon["ROLL ID"])
+          const barcode = label["ROLL ID"]
+            ? await generateBarcode(label["ROLL ID"])
             : null;
 
           const productValue = [
-            getCouponTextValue(coupon, "PRODUCT"),
-            getCouponTextValue(coupon, "PRODUCT1"),
+            getLabelTextValue(label, "PRODUCT"),
+            getLabelTextValue(label, "PRODUCT1"),
           ]
             .filter(Boolean)
             .join(", ");
 
           const agentQrPayload = [
-            getCouponTextValue(coupon, "AGENT NAME"),
-            getCouponTextValue(coupon, "CUSTOMER"),
+            getLabelTextValue(label, "AGENT NAME"),
+            getLabelTextValue(label, "CUSTOMER"),
             productValue,
-            getCouponTextValue(coupon, "ORDER"),
-            getCouponTextValue(coupon, "WIDTH"),
-            getCouponTextValue(coupon, "LENGTH"),
-            getCouponTextValue(coupon, "SPLICE"),
-            getCouponTextValue(coupon, "SLIT BY"),
-            getCouponTextValue(coupon, "ROLL ID"),
-            getCouponTextValue(coupon, "CORE ID"),
+            getLabelTextValue(label, "ORDER"),
+            getLabelTextValue(label, "WIDTH"),
+            getLabelTextValue(label, "LENGTH"),
+            getLabelTextValue(label, "SPLICE"),
+            getLabelTextValue(label, "SLIT BY"),
+            getLabelTextValue(label, "ROLL ID"),
+            getLabelTextValue(label, "CORE ID"),
           ].join(" | ");
 
           const agentNameQr = agentQrPayload.replace(/\s|\|/g, "")
@@ -350,7 +350,7 @@ export default function GeneratePDF({ coupons, jobMeta, uploadedFileName, error 
 
           const fieldBarcodeEntries = await Promise.all(
             barcodeFields.map(async (field) => {
-              const value = getFirstFieldValue(coupon, field.keys);
+              const value = getFirstFieldValue(label, field.keys);
               const fieldBarcode = value ? await generateBarcode(value) : null;
               return [field.label, fieldBarcode];
             })
@@ -359,7 +359,7 @@ export default function GeneratePDF({ coupons, jobMeta, uploadedFileName, error 
 
           temp.push({ mainQr, internalQr, barcode, agentNameQr, fieldBarcodes });
 
-          setProgress(Math.round((temp.length / coupons.length) * 50));
+          setProgress(Math.round((temp.length / labels.length) * 50));
           await new Promise((r) => setTimeout(r, 0));
         }
       }
@@ -370,37 +370,37 @@ export default function GeneratePDF({ coupons, jobMeta, uploadedFileName, error 
     };
 
     run();
-  }, [coupons]);
+  }, [labels]);
 
   // PAGE GENERATION + MERGING
   useEffect(() => {
     const run = async () => {
-      if (!isReady || qrListRef.current.length !== coupons.length) return;
+      if (!isReady || qrListRef.current.length !== labels.length) return;
 
       setIsGenerating(true);
       setPhase("pdf");
 
       const perPage = calculatePerPage(layout);
-      const couponPages = split(coupons, perPage);
-      const totalSheets = Math.ceil(coupons.length / perPage);
+      const labelPages = split(labels, perPage);
+      const totalSheets = Math.ceil(labels.length / perPage);
       const qrPages = split(qrListRef.current, perPage);
 
       const buffers = [];
 
       let globalPageOffset = 0;
 
-      for (let i = 0; i < couponPages.length; i++) {
+      for (let i = 0; i < labelPages.length; i++) {
 
-        setProgress(50 + Math.round(((i + 1) / couponPages.length) * 40));
+        setProgress(50 + Math.round(((i + 1) / labelPages.length) * 40));
 
         const blob = await pdf(
           <PDFDoc
-            coupons={couponPages[i]}
+            labels={labelPages[i]}
             qrList={qrPages[i]}
             layout={layout}
             pageOffset={globalPageOffset}
             totalSheets={totalSheets}
-            totalLabels={coupons.length}
+            totalLabels={labels.length}
             code={jobMeta.code}
             lot={jobMeta.lot}
             job={jobMeta.job}
@@ -410,7 +410,7 @@ export default function GeneratePDF({ coupons, jobMeta, uploadedFileName, error 
 
         const raw = await blob.arrayBuffer();
         buffers.push(raw);
-        globalPageOffset += Math.ceil(couponPages[i].length / perPage);
+        globalPageOffset += Math.ceil(labelPages[i].length / perPage);
 
       }
 
@@ -434,9 +434,9 @@ export default function GeneratePDF({ coupons, jobMeta, uploadedFileName, error 
     };
 
     run();
-  }, [isReady, coupons, layout.values]);
+  }, [isReady, labels, layout.values]);
 
-  if (!coupons.length || error) return null;
+  if (!labels.length || error) return null;
 
   const getOutputFileName = () => {
     if (!uploadedFileName) return "output.pdf";

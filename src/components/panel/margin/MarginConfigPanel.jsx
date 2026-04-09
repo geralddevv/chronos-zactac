@@ -15,7 +15,7 @@ const MarginConfigPanel = () => {
 
           <button
             onClick={() => {
-              const { paperWidthPt, paperHeightPt, couponWidthPt, couponHeightPt } =
+              const { paperWidthPt, paperHeightPt, labelWidthPt, labelHeightPt } =
                 layout.values;
 
               // turn off manual override
@@ -25,8 +25,8 @@ const MarginConfigPanel = () => {
               if (
                 !paperWidthPt ||
                 !paperHeightPt ||
-                !couponWidthPt ||
-                !couponHeightPt
+                !labelWidthPt ||
+                !labelHeightPt
               ) {
                 layout.set.setTopMargin(0);
                 layout.set.setBottomMargin(0);

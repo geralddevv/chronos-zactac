@@ -12,8 +12,8 @@ export const addTrimMarksToPDF = async (pdfBytes, layout) => {
   const {
     paperWidthPt,
     paperHeightPt,
-    couponWidthPt,
-    couponHeightPt,
+    labelWidthPt,
+    labelHeightPt,
     leftMargin,
     rightMargin,
     topMargin,
@@ -27,8 +27,8 @@ export const addTrimMarksToPDF = async (pdfBytes, layout) => {
       page,
       paperWidthPt,
       paperHeightPt,
-      couponWidthPt,
-      couponHeightPt,
+      labelWidthPt,
+      labelHeightPt,
       leftMargin,
       rightMargin,
       topMargin,
@@ -46,8 +46,8 @@ function addDynamicTrimMarks(
   page,
   pageWidth,
   pageHeight,
-  couponWidth,
-  couponHeight,
+  labelWidth,
+  labelHeight,
   leftMargin,
   rightMargin,
   topMargin,
@@ -64,19 +64,19 @@ function addDynamicTrimMarks(
   const usableW = pageWidth - leftMargin - rightMargin;
   const usableH = pageHeight - topMargin - bottomMargin;
 
-  const cols = Math.floor((usableW + gapX) / (couponWidth + gapX));
-  const rows = Math.floor((usableH + gapY) / (couponHeight + gapY));
+  const cols = Math.floor((usableW + gapX) / (labelWidth + gapX));
+  const rows = Math.floor((usableH + gapY) / (labelHeight + gapY));
 
   if (cols <= 0 || rows <= 0) return;
 
   const gridHeight =
-    rows * couponHeight + (rows - 1) * gapY;
+    rows * labelHeight + (rows - 1) * gapY;
 
   const startX = leftMargin;
   const startY = pageHeight - topMargin - gridHeight;
 
   const endX =
-    startX + cols * couponWidth + (cols - 1) * gapX;
+    startX + cols * labelWidth + (cols - 1) * gapX;
   const endY = startY + gridHeight;
 
   // CUT GRIDS
@@ -84,7 +84,7 @@ function addDynamicTrimMarks(
   for (let c = 0; c <= cols; c++) {
     xCuts.push(
       startX +
-      c * couponWidth +
+      c * labelWidth +
       Math.max(0, c - 1) * gapX
     );
   }
@@ -93,7 +93,7 @@ function addDynamicTrimMarks(
   for (let r = 0; r <= rows; r++) {
     yCuts.push(
       startY +
-      r * couponHeight +
+      r * labelHeight +
       Math.max(0, r - 1) * gapY
     );
   }
@@ -137,7 +137,7 @@ function addDynamicTrimMarks(
 
     for (let c = 0; c < cols - 1; c++) {
       const labelEndX =
-        startX + (c + 1) * couponWidth + c * gapX;
+        startX + (c + 1) * labelWidth + c * gapX;
 
       const shiftedX = labelEndX + gapX;
 
@@ -156,7 +156,7 @@ function addDynamicTrimMarks(
 
     for (let r = 0; r < rows - 1; r++) {
       const labelTopY =
-        startY + (r + 1) * couponHeight + r * gapY;
+        startY + (r + 1) * labelHeight + r * gapY;
 
       const shiftedY = labelTopY + gapY;
 

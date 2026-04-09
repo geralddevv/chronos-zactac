@@ -10,15 +10,15 @@ export const LayoutProvider = ({ children }) => {
 
   // Units
   const [paperUnit, setPaperUnit] = useState("mm");
-  const [couponUnit, setCouponUnit] = useState("mm");
+  const [labelUnit, setLabelUnit] = useState("mm");
 
   // Papers
   const [paperWidthPt, setPaperWidthPt] = useState(DEFAULT_WIDTH_MM * MM_TO_PT);
   const [paperHeightPt, setPaperHeightPt] = useState(DEFAULT_HEIGHT_MM * MM_TO_PT);
 
-  // Coupons
-  const [couponWidthPt, setCouponWidthPt] = useState(DEFAULT_WIDTH_MM * MM_TO_PT);
-  const [couponHeightPt, setCouponHeightPt] = useState(DEFAULT_HEIGHT_MM * MM_TO_PT);
+  // Labels
+  const [labelWidthPt, setLabelWidthPt] = useState(DEFAULT_WIDTH_MM * MM_TO_PT);
+  const [labelHeightPt, setLabelHeightPt] = useState(DEFAULT_HEIGHT_MM * MM_TO_PT);
 
   // Orientation
   const [orientation, setOrientation] = useState("portrait");
@@ -44,11 +44,11 @@ export const LayoutProvider = ({ children }) => {
   const layout = {
     values: {
       paperUnit,
-      couponUnit,
+      labelUnit,
       paperWidthPt,
       paperHeightPt,
-      couponWidthPt,
-      couponHeightPt,
+      labelWidthPt,
+      labelHeightPt,
       orientation,
       fontScale,
       rightMargin,
@@ -63,11 +63,11 @@ export const LayoutProvider = ({ children }) => {
 
     set: {
       setPaperUnit,
-      setCouponUnit,
+      setLabelUnit,
       setPaperWidthPt,
       setPaperHeightPt,
-      setCouponWidthPt,
-      setCouponHeightPt,
+      setLabelWidthPt,
+      setLabelHeightPt,
       setOrientation,
       setFontScale,
       setRightMargin,
