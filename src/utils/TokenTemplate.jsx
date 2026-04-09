@@ -99,6 +99,9 @@ const TokenTemplate = ({
   const value3 = getFirstValue(field3.keys);
   const value4 = getFirstValue(field4.keys);
   const value5 = getFirstValue(field5.keys);
+  const headingRowFlex = 0.68;
+  const topHeadingRowFlex = 0.74;
+  const barcodeRowFlex = 1.32;
 
   const barcode0 = fieldBarcodes?.[field0.label];
   const barcode1 = fieldBarcodes?.[field1.label];
@@ -116,7 +119,7 @@ const TokenTemplate = ({
         display: "flex",
         flexDirection: "row",
         padding: 10,
-        paddingTop: 2,
+        paddingTop: 5,
         paddingBottom: 5,
         // backgroundColor: "grey",
       }}
@@ -140,8 +143,8 @@ const TokenTemplate = ({
               position: "absolute",
               top: 45,
               right: 30,
-              width: 36,
-              height: 36,
+              width: 50,
+              height: 50,
             }}
           />
         )}
@@ -347,7 +350,7 @@ const TokenTemplate = ({
                 width: labelWidth,
                 fontFamily: "Helvetica",
                 fontWeight: 600,
-                fontSize: 16,
+                fontSize: 18,
                 marginBottom: 8,
               }}
             >
@@ -387,7 +390,7 @@ const TokenTemplate = ({
             transform: "rotate(-90deg)",
           }}
         >
-          <View style={{ flex: 1, flexDirection: "row" }}>
+          <View style={{ flex: topHeadingRowFlex, flexDirection: "row" }}>
             <View
               style={{
                 flex: 1,
@@ -395,9 +398,9 @@ const TokenTemplate = ({
                 paddingVertical: 4,
                 justifyContent: "center",
                 alignItems: "flex-start",
-                borderRightWidth: 2,
-                borderTopWidth: 2,
-                borderBottomWidth: 2,
+                borderRightWidth: 1.5,
+                borderTopWidth: 1.5,
+                borderBottomWidth: 1.5,
               }}
             >
               <Text style={{ fontFamily: "Helvetica", fontWeight: 600, fontSize: 9, textAlign: "left" }}>
@@ -411,8 +414,8 @@ const TokenTemplate = ({
                 paddingVertical: 4,
                 justifyContent: "center",
                 alignItems: "flex-start",
-                borderTopWidth: 2,
-                borderBottomWidth: 2,
+                borderTopWidth: 1.5,
+                borderBottomWidth: 1.5,
               }}
             >
               <Text style={{ fontFamily: "Helvetica", fontWeight: 600, fontSize: 9, textAlign: "left" }}>
@@ -421,7 +424,7 @@ const TokenTemplate = ({
             </View>
           </View>
 
-          <View style={{ flex: 1, flexDirection: "row" }}>
+          <View style={{ flex: barcodeRowFlex, flexDirection: "row" }}>
             <View
               style={{
                 flex: 1,
@@ -429,8 +432,8 @@ const TokenTemplate = ({
                 paddingVertical: 4,
                 justifyContent: "center",
                 alignItems: "flex-start",
-                borderRightWidth: 2,
-                borderBottomWidth: 2,
+                borderRightWidth: 1.5,
+                borderBottomWidth: 1.5,
               }}
             >
               {!!barcode0 && (
@@ -452,7 +455,7 @@ const TokenTemplate = ({
                 paddingVertical: 4,
                 justifyContent: "center",
                 alignItems: "flex-start",
-                borderBottomWidth: 2,
+                borderBottomWidth: 1.5,
               }}
             >
               {!!barcode1 && (
@@ -469,7 +472,7 @@ const TokenTemplate = ({
             </View>
           </View>
 
-          <View style={{ flex: 1, flexDirection: "row" }}>
+          <View style={{ flex: headingRowFlex, flexDirection: "row" }}>
             <View
               style={{
                 flex: 1,
@@ -477,8 +480,8 @@ const TokenTemplate = ({
                 paddingVertical: 4,
                 justifyContent: "center",
                 alignItems: "flex-start",
-                borderRightWidth: 2,
-                borderBottomWidth: 2,
+                borderRightWidth: 1.5,
+                borderBottomWidth: 1.5,
               }}
             >
               <Text style={{ fontFamily: "Helvetica", fontWeight: 600, fontSize: 9, textAlign: "left" }}>
@@ -492,7 +495,7 @@ const TokenTemplate = ({
                 paddingVertical: 4,
                 justifyContent: "center",
                 alignItems: "flex-start",
-                borderBottomWidth: 2,
+                borderBottomWidth: 1.5,
               }}
             >
               <Text style={{ fontFamily: "Helvetica", fontWeight: 600, fontSize: 9, textAlign: "left" }}>
@@ -501,7 +504,7 @@ const TokenTemplate = ({
             </View>
           </View>
 
-          <View style={{ flex: 1, flexDirection: "row" }}>
+          <View style={{ flex: barcodeRowFlex, flexDirection: "row" }}>
             <View
               style={{
                 flex: 1,
@@ -509,8 +512,8 @@ const TokenTemplate = ({
                 paddingVertical: 4,
                 justifyContent: "center",
                 alignItems: "flex-start",
-                borderRightWidth: 2,
-                borderBottomWidth: 2,
+                borderRightWidth: 1.5,
+                borderBottomWidth: 1.5,
               }}
             >
               {!!barcode2 && (
@@ -532,7 +535,7 @@ const TokenTemplate = ({
                 paddingVertical: 4,
                 justifyContent: "center",
                 alignItems: "flex-start",
-                borderBottomWidth: 2,
+                borderBottomWidth: 1.5,
               }}
             >
               {!!barcode3 && (
@@ -549,7 +552,7 @@ const TokenTemplate = ({
             </View>
           </View>
 
-          <View style={{ flex: 1, flexDirection: "row" }}>
+          <View style={{ flex: headingRowFlex, flexDirection: "row" }}>
             <View
               style={{
                 flex: 1,
@@ -557,8 +560,8 @@ const TokenTemplate = ({
                 paddingVertical: 4,
                 justifyContent: "center",
                 alignItems: "flex-start",
-                borderRightWidth: 2,
-                borderBottomWidth: 2,
+                borderRightWidth: 1.5,
+                borderBottomWidth: 1.5,
               }}
             >
               <Text style={{ fontFamily: "Helvetica", fontWeight: 600, fontSize: 9, textAlign: "left" }}>
@@ -572,7 +575,7 @@ const TokenTemplate = ({
                 paddingVertical: 4,
                 justifyContent: "center",
                 alignItems: "flex-start",
-                borderBottomWidth: 2,
+                borderBottomWidth: 1.5,
               }}
             >
               <Text style={{ fontFamily: "Helvetica", fontWeight: 600, fontSize: 9, textAlign: "left" }}>
@@ -581,7 +584,7 @@ const TokenTemplate = ({
             </View>
           </View>
 
-          <View style={{ flex: 1, flexDirection: "row" }}>
+          <View style={{ flex: barcodeRowFlex, flexDirection: "row" }}>
             <View
               style={{
                 flex: 1,
@@ -589,7 +592,7 @@ const TokenTemplate = ({
                 paddingVertical: 4,
                 justifyContent: "center",
                 alignItems: "flex-start",
-                borderRightWidth: 2,
+                borderRightWidth: 1.5,
               }}
             >
               {!!barcode4 && (

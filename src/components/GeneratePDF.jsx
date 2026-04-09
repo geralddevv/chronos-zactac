@@ -209,6 +209,12 @@ const getFirstFieldValue = (coupon, keys) => {
   return null;
 };
 
+const getCouponTextValue = (coupon, key) => {
+  const value = coupon?.[key];
+  if (value === null || value === undefined) return "";
+  return String(value).trim();
+};
+
 const calculatePerPage = (layout) => {
   const {
     paperWidthPt,
@@ -319,8 +325,28 @@ export default function GeneratePDF({ coupons, jobMeta, error }) {
             ? await generateBarcode(coupon["ROLL ID"])
             : null;
 
-          const agentNameQr = coupon["AGENT NAME"]
-            ? await generateQR(coupon["AGENT NAME"].toString())
+          const productValue = [
+            getCouponTextValue(coupon, "PRODUCT"),
+            getCouponTextValue(coupon, "PRODUCT1"),
+          ]
+            .filter(Boolean)
+            .join(", ");
+
+          const agentQrPayload = [
+            getCouponTextValue(coupon, "AGENT NAME"),
+            getCouponTextValue(coupon, "CUSTOMER"),
+            productValue,
+            getCouponTextValue(coupon, "ORDER"),
+            getCouponTextValue(coupon, "WIDTH"),
+            getCouponTextValue(coupon, "LENGTH"),
+            getCouponTextValue(coupon, "SPLICE"),
+            getCouponTextValue(coupon, "SLIT BY"),
+            getCouponTextValue(coupon, "ROLL ID"),
+            getCouponTextValue(coupon, "CORE ID"),
+          ].join(" | ");
+
+          const agentNameQr = agentQrPayload.replace(/\s|\|/g, "")
+            ? await generateQR(agentQrPayload)
             : null;
 
           const fieldBarcodeEntries = await Promise.all(
