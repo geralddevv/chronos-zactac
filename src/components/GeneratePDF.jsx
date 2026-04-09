@@ -9,7 +9,6 @@ import mergePDFBuffers from "../utils/mergePDFBuffers";
 import ProgressBar from "../utils/ProgressBar";
 import { useRefresh } from "../context/RefreshContext";
 import Toast from "../utils/Toast";
-import { parseJobMetaFromFileName } from "../utils/parseJobMetaFromFileName";
 
 
 import { AnimatePresence, motion } from "framer-motion";
@@ -243,7 +242,7 @@ const calculatePerPage = (layout) => {
   return cols * rows;
 };
 
-export default function GeneratePDF({ coupons, jobMeta, error }) {
+export default function GeneratePDF({ coupons, jobMeta, uploadedFileName, error }) {
   const { resetSignal } = useRefresh();
 
   const qrListRef = useRef([]);
@@ -440,18 +439,8 @@ export default function GeneratePDF({ coupons, jobMeta, error }) {
   if (!coupons.length || error) return null;
 
   const getOutputFileName = () => {
-    const code = jobMeta?.code || "OUTPUT";
-    const count = coupons.length;
-
-    const lot = jobMeta?.lot ? `Lot ${jobMeta.lot}` : null;
-    const job = jobMeta?.job ? `Job ${jobMeta.job}` : null;
-
-    const extra =
-      lot || job
-        ? ` ( ${[lot, job].filter(Boolean).join(", ")} )`
-        : "";
-
-    return `${code} (${count})${extra}.pdf`;
+    if (!uploadedFileName) return "output.pdf";
+    return uploadedFileName.replace(/\.[^/.]+$/, ".pdf");
   };
 
 

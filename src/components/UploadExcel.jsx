@@ -11,6 +11,7 @@ import { parseJobMetaFromFileName } from "../utils/parseJobMetaFromFileName";
 export default function UploadExcel({ resetSignal, setCoupons, hasCoupons, couponsLength, coupons }) {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(null);
+  const [uploadedFileName, setUploadedFileName] = useState("");
   const fileInputRef = useRef(null);
 
   const [toastMsg, setToastMsg] = useState("");
@@ -75,10 +76,12 @@ export default function UploadExcel({ resetSignal, setCoupons, hasCoupons, coupo
   const handleFile = useCallback(async (e) => {
     const file = e.target.files[0];
     if (!file) return;
+    setUploadedFileName(file.name);
 
     if (!file.name.match(/\.(xlsx|xls)$/i)) {
       setError("Please upload a valid file (.xlsx)");
       setCoupons([]);
+      setUploadedFileName("");
       if (fileInputRef.current) fileInputRef.current.value = "";
       return;
     }
@@ -98,6 +101,7 @@ export default function UploadExcel({ resetSignal, setCoupons, hasCoupons, coupo
     } catch (err) {
       setError(err.message);
       setCoupons([]);
+      setUploadedFileName("");
       if (fileInputRef.current) fileInputRef.current.value = "";
     } finally {
       setIsLoading(false);
@@ -110,6 +114,7 @@ export default function UploadExcel({ resetSignal, setCoupons, hasCoupons, coupo
       if (fileInputRef.current) fileInputRef.current.value = "";
       setCoupons([]);
       setError(null);
+      setUploadedFileName("");
     }
   }, [resetSignal]);
 
@@ -170,7 +175,13 @@ export default function UploadExcel({ resetSignal, setCoupons, hasCoupons, coupo
       </div>
 
       <ErrorBoundary>
-        <GeneratePDF coupons={coupons} jobMeta={jobMeta} key={resetSignal} error={error} />
+        <GeneratePDF
+          coupons={coupons}
+          jobMeta={jobMeta}
+          uploadedFileName={uploadedFileName}
+          key={resetSignal}
+          error={error}
+        />
       </ErrorBoundary>
 
       <Toast message={toastMsg} show={showToast} onClose={() => setShowToast(false)} />
