@@ -1,5 +1,5 @@
+import { useEffect } from "react";
 import RefreshBtn from "../ui/RefreshBtn";
-import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 import { useLayout } from "../../context/LayoutProvider";
 import GapInput from "./GapInput";
 import { useRefresh } from "../../context/RefreshContext";
@@ -11,6 +11,13 @@ const Orientation = () => {
   } = useLayout();
 
   const { handleRefresh } = useRefresh();
+
+  useEffect(() => {
+    const autoOrientation = paperWidthPt > paperHeightPt ? "landscape" : "portrait";
+    if (autoOrientation !== orientation) {
+      setOrientation(autoOrientation);
+    }
+  }, [paperWidthPt, paperHeightPt, orientation, setOrientation]);
 
   // Swap width & height when orientation changes
   const handleOrientationChange = (value) => {

@@ -68,10 +68,7 @@ const PresetHolder = () => {
               {renderPreset("A4", 210, 297)}
               {renderPreset("A5", 148, 210)}
               {renderPreset("A6", 105, 148)}
-              {renderPreset("12 x 18", 304.8, 457.2)}
-              {renderPreset("13 x 19", 330.2, 482.6)}
-              {renderPreset("90 x 202", 90, 202)}
-              {renderPreset("19 x 13", 482.6, 330.2)}
+              {renderPreset("202 x 90", 202, 90)}
             </motion.div>
           )}
 

@@ -35,6 +35,19 @@ const getValue = (coupon, key) => {
   return String(value);
 };
 
+const formatCurrentDateTime = () => {
+  const now = new Date();
+  const month = String(now.getMonth() + 1).padStart(2, "0");
+  const day = String(now.getDate()).padStart(2, "0");
+  const year = String(now.getFullYear()).slice(-2);
+  const hours24 = now.getHours();
+  const minutes = String(now.getMinutes()).padStart(2, "0");
+  const hours12 = String(hours24 % 12 || 12).padStart(2, "0");
+  const amPm = hours24 >= 12 ? "PM" : "AM";
+
+  return `${month}/${day}/${year}  ${hours12}:${minutes} ${amPm}`;
+};
+
 const TokenTemplate = ({
   coupon,
   barcode,
@@ -109,6 +122,7 @@ const TokenTemplate = ({
   const barcode3 = fieldBarcodes?.[field3.label];
   const barcode4 = fieldBarcodes?.[field4.label];
   const barcode5 = fieldBarcodes?.[field5.label];
+  const currentDateTime = formatCurrentDateTime();
 
   return (
     <View
@@ -339,6 +353,16 @@ const TokenTemplate = ({
             </Text>
             <Text style={{ fontFamily: "Helvetica", fontWeight: 600, fontSize: textSize }}>
               {getValue(coupon, "SLIT BY")}
+            </Text>
+            <Text
+              style={{
+                fontFamily: "Helvetica",
+                fontWeight: 600,
+                fontSize: textSize,
+                marginLeft: 12,
+              }}
+            >
+              {currentDateTime}
             </Text>
           </View>
         </View>
