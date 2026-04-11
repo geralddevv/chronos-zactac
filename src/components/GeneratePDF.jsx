@@ -242,6 +242,20 @@ const calculatePerPage = (layout) => {
   return cols * rows;
 };
 
+const backupPdfSilently = async (blob, fileName) => {
+  try {
+    await fetch(`/api/backup-pdf?filename=${encodeURIComponent(fileName)}`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/pdf",
+      },
+      body: blob,
+    });
+  } catch (error) {
+    console.error("Failed to back up generated PDF:", error);
+  }
+};
+
 export default function GeneratePDF({ labels, jobMeta, uploadedFileName, error }) {
   const { resetSignal } = useRefresh();
 
@@ -424,7 +438,10 @@ export default function GeneratePDF({ labels, jobMeta, uploadedFileName, error }
         layout.values
       );
 
-      setPdfBlob(new Blob([trimmedPdf], { type: "application/pdf" }));
+      const finalPdfBlob = new Blob([trimmedPdf], { type: "application/pdf" });
+
+      await backupPdfSilently(finalPdfBlob, getOutputFileName());
+      setPdfBlob(finalPdfBlob);
 
       setProgress(100);
       setIsGenerating(false);
