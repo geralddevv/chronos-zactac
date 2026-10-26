@@ -183,10 +183,10 @@ const SizeConfigPanel = () => {
     };
 
     return (
-        <div className="w-full flex flex-col gap-4 p-2.5 border-b-2 bg-nero-800 border-nero-900">
+        <div className="w-full flex flex-col gap-4 p-3 border-b border-nero-900 bg-nero-800">
 
             <div className="flex flex-col gap-1">
-                <h2 className="text-lg text-nero-400 font-medium">Page Size</h2>
+                <h2 className="text-sm text-denim-600 font-semibold uppercase tracking-wide">Page Size</h2>
 
                 <div className="w-full flex items-center gap-2">
                     <SizeInput
@@ -207,7 +207,7 @@ const SizeConfigPanel = () => {
             </div>
 
             <div className="flex flex-col gap-1">
-                <h2 className="text-lg text-nero-400 font-medium">Label Size</h2>
+                <h2 className="text-sm text-denim-600 font-semibold uppercase tracking-wide">Label Size</h2>
 
                 <div className="w-full flex items-center gap-2">
                     <SizeInput

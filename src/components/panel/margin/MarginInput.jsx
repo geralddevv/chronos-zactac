@@ -48,20 +48,20 @@ const MarginInput = ({ label }) => {
             <label className="text-sm text-nero-400 font-medium">{label}</label>
 
             <div className="w-full h-8 flex rounded-md">
-                
+
                 {/* Up/Down Buttons */}
                 <div className="h-8 w-6 bg-nero-750 border border-nero-600 border-r-0 flex flex-col rounded-bl-md rounded-tl-md overflow-hidden">
                     <button
                         type="button"
                         onClick={increase}
-                        className="flex-1 flex items-center justify-center text-nero-400 hover:text-nero-300"
+                        className="flex-1 flex items-center justify-center text-nero-400 hover:text-denim-600"
                     >
                         <KeyboardArrowUpIcon sx={{ fontSize: 16, marginBottom: "-2px" }} />
                     </button>
                     <button
                         type="button"
                         onClick={decrease}
-                        className="flex-1 flex items-center justify-center text-nero-400 hover:text-nero-300"
+                        className="flex-1 flex items-center justify-center text-nero-400 hover:text-denim-600"
                     >
                         <KeyboardArrowDownIcon sx={{ fontSize: 16, marginTop: "-2px" }} />
                     </button>
@@ -73,7 +73,7 @@ const MarginInput = ({ label }) => {
                     value={inputValue}
                     onChange={(e) => update(e.target.value)}
                     onFocus={(e) => e.target.select()}
-                    className="no-spinner w-[80%] h-8 px-2 py-1 bg-nero-700 border border-nero-600 rounded-md rounded-bl-none rounded-tl-none text-sm"
+                    className="no-spinner w-[80%] h-8 px-2 py-1 bg-nero-700 border border-nero-600 rounded-md rounded-bl-none rounded-tl-none text-sm text-nero-300 focus:outline-none focus:border-denim-600 focus:ring-2 focus:ring-denim-600/15 transition-colors"
                 />
             </div>
         </div>

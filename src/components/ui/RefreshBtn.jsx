@@ -7,11 +7,11 @@ function RefreshBtn() {
   return (
     <button
       onClick={handleRefresh}
-      className="group flex justify-center items-center w-full h-8 bg-nero-700 border border-nero-600 text-nero-100 font-bold rounded-md transition-all duration-200 focus:outline-none focus:ring-1 focus:border-nero-400"
+      className="group flex justify-center items-center w-full h-8 bg-denim-600 border border-denim-600 text-white font-bold rounded-md transition-all duration-200 hover:bg-denim-700 focus:outline-none focus:ring-2 focus:ring-denim-600/30"
     >
       <AutorenewIcon
         fontSize="small"
-        className="text-nero-400 group-hover:text-nero-300 transition-colors duration-200"
+        className="text-white transition-colors duration-200"
       />
       {/* <span className="text-sm text-nero-400 font-medium pl-1 group-hover:text-nero-300 transition-colors duration-200">
         Reset

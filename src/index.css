@@ -6,33 +6,34 @@
 }
 
 @theme {
-/* Neutral / Grey Scale */
---color-nero-50:  #ffffff; /* Pure White */
---color-nero-100: #f3f3f3; /* Snow Grey */
---color-nero-300: #d1d1d1; /* Light Grey */
---color-nero-400: #b4b4b4; /* Soft Grey */
---color-nero-450: #989898; /* Mid Grey */
---color-nero-600: #5d5d5d; /* Medium Grey */
---color-nero-700: #2a2a2a; /* Charcoal */
---color-nero-750: #2e2e2e; /* Dark Charcoal */
---color-nero-800: #323232; /* Obsidian Grey */
---color-nero-900: #1b1b1b; /* Almost Black */
+/* Neutral scale -- light ERP surface, matching the Sachiko app's
+   #f8f9fa page / white card / dark-slate-text look. */
+--color-nero-50:  #ffffff; /* Card / input background */
+--color-nero-100: #f8f9fa; /* Page background */
+--color-nero-300: #1e293b; /* Primary text (on light surfaces) */
+--color-nero-400: #64748b; /* Secondary / label text */
+--color-nero-450: #94a3b8; /* Muted icon / placeholder text */
+--color-nero-600: #cbd5e1; /* Input border */
+--color-nero-700: #f8fafc; /* Input fill */
+--color-nero-750: #eef2f6; /* Input group fill (segmented controls) */
+--color-nero-800: #ffffff; /* Panel / card background */
+--color-nero-900: #e2e8f0; /* Panel border / divider */
 
   /* Accent */
-  --color-accent-500: #1473e6;
+  --color-accent-500: #044a78;
 
-  /* Denim */
-  --color-denim-50: #f3f6fc;
-  --color-denim-100: #e5edf9;
-  --color-denim-200: #c5d9f2;
-  --color-denim-300: #92bae7;
-  --color-denim-400: #5897d8;
-  --color-denim-500: #337ac4;
-  --color-denim-600: #2462ab;
-  --color-denim-700: #1d4c87;
-  --color-denim-800: #1c4270;
-  --color-denim-900: #1c395e;
-  --color-denim-950: #1c395e;
+  /* Denim -- re-mapped to the Sachiko navy brand colour (#044a78). */
+  --color-denim-50: #e8f2fa;
+  --color-denim-100: #d2e6f4;
+  --color-denim-200: #a9cce8;
+  --color-denim-300: #7cc4f2;
+  --color-denim-400: #2f87bd;
+  --color-denim-500: #0d5c90;
+  --color-denim-600: #044a78;
+  --color-denim-700: #03365a;
+  --color-denim-800: #022844;
+  --color-denim-900: #021d32;
+  --color-denim-950: #021d32;
 }
 
 /*Scrollbar Utilities*/
@@ -46,14 +47,14 @@
   }
 
   .minimal-scrollbar::-webkit-scrollbar-thumb {
-    background: #2b2b2b;
+    background: #044a78;
     border-radius: 8px;
   }
 
   /* Firefox */
   .minimal-scrollbar {
     scrollbar-width: thin;
-    scrollbar-color: #2b2b2b transparent;
+    scrollbar-color: #044a78 transparent;
   }
 
   .minimal-scrollbar::-webkit-scrollbar-button {

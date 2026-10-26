@@ -16,8 +16,8 @@ const PresetHolder = () => {
   const [selectedPreset, setSelectedPreset] = useState(null);
 
   const tabClasses = (index) =>
-    `px-4 py-2 cursor-pointer whitespace-nowrap transition-colors duration-200 border-b-2 border-transparent
-     ${currentTab === index ? "text-nero-300 border-b-2 border-white" : "text-nero-400 hover:text-nero-100"}`;
+    `px-4 py-2 cursor-pointer whitespace-nowrap font-medium transition-colors duration-200 border-b-2 border-transparent
+     ${currentTab === index ? "text-denim-600 border-b-2 border-denim-600" : "text-nero-400 hover:text-denim-600"}`;
 
   const renderPreset = (name, w, h) => (
     <PresetOption
@@ -31,12 +31,12 @@ const PresetHolder = () => {
 
   return (
     <div className="w-full sm:w-[50%] md:w-[60%] lg:w-[67%] xl:w-[72%] h-screen">
-      <div className="w-full bg-nero-800 border-b-2 border-r-2 border-nero-900 text-nero-300 text-xl px-4 py-2">
+      <div className="w-full bg-denim-600 text-white font-medium text-xl px-4 py-2">
         Presets
       </div>
 
       {/* Tabs */}
-      <div className="bg-nero-800 border-b-2 border-r-2 border-nero-900 minimal-scrollbar overflow-x-auto">
+      <div className="bg-nero-800 border-b border-nero-900 minimal-scrollbar overflow-x-auto">
         <div
           className="flex items-center px-4 gap-3 sm:gap-4 md:gap-6 lg:gap-8 xl:gap-1 w-max mx-auto lg:mx-auto md:mx-0">
           {tabs.map((tab, index) => (
@@ -59,7 +59,7 @@ const PresetHolder = () => {
             <motion.div
               key="a-series"
               {...animation}
-              className="w-full bg-nero-900 text-nero-300 p-2.5 grid grid-cols-[repeat(auto-fit,minmax(162px,1fr))] grid-auto-rows-[162px] gap-2 place-items-center"
+              className="w-full bg-nero-100 text-nero-300 p-2.5 grid grid-cols-[repeat(auto-fit,minmax(162px,1fr))] grid-auto-rows-[162px] gap-2 place-items-center"
             >
               {renderPreset("A0", 841, 1189)}
               {renderPreset("A1", 594, 841)}
@@ -76,7 +76,7 @@ const PresetHolder = () => {
             <motion.div
               key="b-series"
               {...animation}
-              className="w-full bg-nero-900 text-nero-300 p-2.5 grid grid-cols-[repeat(auto-fit,minmax(162px,1fr))] grid-auto-rows-[162px] gap-2 place-items-center"
+              className="w-full bg-nero-100 text-nero-300 p-2.5 grid grid-cols-[repeat(auto-fit,minmax(162px,1fr))] grid-auto-rows-[162px] gap-2 place-items-center"
             >
               {renderPreset("B0", 1000, 1414)}
               {renderPreset("B1", 707, 1000)}
@@ -92,7 +92,7 @@ const PresetHolder = () => {
             <motion.div
               key="c-series"
               {...animation}
-              className="w-full bg-nero-900 text-nero-300 p-2.5 grid grid-cols-[repeat(auto-fit,minmax(162px,1fr))] grid-auto-rows-[162px] gap-2 place-items-center"
+              className="w-full bg-nero-100 text-nero-300 p-2.5 grid grid-cols-[repeat(auto-fit,minmax(162px,1fr))] grid-auto-rows-[162px] gap-2 place-items-center"
             >
               {renderPreset("C0", 917, 1297)}
               {renderPreset("C1", 648, 917)}
@@ -108,7 +108,7 @@ const PresetHolder = () => {
             <motion.div
               key="us-series"
               {...animation}
-              className="w-full bg-nero-900 text-nero-300 p-2.5 grid grid-cols-[repeat(auto-fit,minmax(162px,1fr))] grid-auto-rows-[162px] gap-2 place-items-center"
+              className="w-full bg-nero-100 text-nero-300 p-2.5 grid grid-cols-[repeat(auto-fit,minmax(162px,1fr))] grid-auto-rows-[162px] gap-2 place-items-center"
             >
               {renderPreset("Letter", 216, 279)}
               {renderPreset("Legal", 216, 356)}

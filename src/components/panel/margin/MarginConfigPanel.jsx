@@ -8,10 +8,10 @@ const MarginConfigPanel = () => {
   const layout = useLayout();
 
   return (
-    <div className="w-full flex flex-col p-2.5 border-b-2 bg-nero-800 border-nero-900">
+    <div className="w-full flex flex-col p-3 border-b border-nero-900 bg-nero-800">
       <div className="flex flex-col gap-2.5">
         <div className="w-full flex items-center justify-between">
-          <h2 className="text-lg font-medium">Margin <span className="text-[11px]">(mm)</span></h2>
+          <h2 className="text-sm text-denim-600 font-semibold uppercase tracking-wide">Margin <span className="text-[11px] font-normal text-nero-400 normal-case">(mm)</span></h2>
 
           <button
             onClick={() => {
@@ -38,7 +38,7 @@ const MarginConfigPanel = () => {
               // else → calculate proper auto margins
               computeAutoMargins(layout);
             }}
-            className="px-3 py-1 text-xs bg-nero-700 border border-nero-600 rounded-md hover:bg-nero-800 transition-all duration-200 ease-in-out"
+            className="px-3 py-1 text-xs font-medium text-denim-600 bg-denim-50 border border-denim-100 rounded-full hover:bg-denim-600 hover:text-white hover:border-denim-600 transition-all duration-200 ease-in-out"
           >
             Reset Margin
           </button>

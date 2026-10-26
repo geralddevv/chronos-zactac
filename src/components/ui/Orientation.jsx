@@ -36,7 +36,7 @@ const Orientation = () => {
   };
 
   return (
-    <div className="w-full p-2.5 flex justify-center items-center gap-2 border-b-2 bg-nero-800 border-nero-900">
+    <div className="w-full p-3 flex justify-center items-center gap-2 border-b border-nero-900 bg-nero-800">
       <div className="w-[30%] flex">
           {/* Label */}
           {/* <div className="h-8 bg-nero-750 border border-nero-600 border-r-0 px-2 py-1 flex flex-col justify-center items-center rounded-bl-md rounded-tl-md">
@@ -44,7 +44,7 @@ const Orientation = () => {
           </div> */}
 
           <select
-            className="appearance-none w-full h-8 px-2 py-1 bg-nero-700 rounded-md border border-nero-600 text-sm text-nero-200 text-center focus:outline-none cursor-pointer"
+            className="appearance-none w-full h-8 px-2 py-1 bg-nero-700 rounded-md border border-nero-600 text-sm text-nero-300 text-center focus:outline-none focus:border-denim-600 cursor-pointer"
             value={orientation}
             onChange={(e) => handleOrientationChange(e.target.value)}
           >

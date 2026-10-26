@@ -144,11 +144,11 @@ export default function UploadExcel({ resetSignal, setLabels, hasLabels, labelsL
   };
 
   return (
-    <div className="w-full flex flex-col items-center bg-nero-800 focus:outline-none focus:ring-1 focus:border-nero-400">
-      <div className="w-full p-2.5 flex flex-col justify-center items-center gap-1 focus:outline-none focus:ring-1 focus:border-nero-400">
+    <div className="w-full flex flex-col items-center bg-nero-800 p-3 focus:outline-none">
+      <div className="w-full flex flex-col justify-center items-center gap-1 focus:outline-none">
         <input
           ref={fileInputRef}
-          className="w-full h-12 p-2 flex items-center cursor-pointer bg-nero-800 border border-default-medium text-heading text-sm rounded-md focus:ring-brand focus:border-brand focus:outline-none"
+          className="w-full h-12 p-2 flex items-center cursor-pointer bg-nero-700 border border-nero-600 text-nero-300 text-sm rounded-md focus:ring-2 focus:ring-denim-600/15 focus:border-denim-600 focus:outline-none"
           id="file_input"
           accept=".xlsx,.xls"
           disabled={isLoading}
@@ -168,7 +168,7 @@ export default function UploadExcel({ resetSignal, setLabels, hasLabels, labelsL
         )}
 
         {error && (
-          <div className="w-[90%] text-red-200 text-sm text-center py-0 px-2 rounded-md border border-red-200">
+          <div className="w-full text-[#842029] bg-[#f8d7da] text-sm text-center py-1.5 px-2 rounded-md border border-[#f5c2c7]">
             {error}
           </div>
         )}

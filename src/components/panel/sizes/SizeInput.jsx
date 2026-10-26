@@ -10,7 +10,7 @@ const SizeInput = ({ label, value, onValueChange }) => {
             <input
                 type="number"
                 id={label}
-                className="no-spinner w-full h-8 px-2 py-1 bg-nero-700 rounded-md border border-nero-600 text-sm"
+                className="no-spinner w-full h-8 px-2 py-1 bg-nero-700 rounded-md border border-nero-600 text-sm text-nero-300 focus:outline-none focus:border-denim-600 focus:ring-2 focus:ring-denim-600/15 transition-colors"
                 value={value}
                 onChange={(e) => onValueChange(e.target.value)}
                 onFocus={(e) => e.target.select()}

@@ -10,7 +10,7 @@ const UnitSelector = ({ label = "Units", value, onChange }) => {
 
             <div className="relative w-full flex items-center">
                 <select
-                    className="appearance-none w-full h-8 px-2 py-1 bg-nero-700 rounded-md border border-nero-600 text-[13px] text-nero-200 focus:outline-none cursor-pointer"
+                    className="appearance-none w-full h-8 px-2 py-1 bg-nero-700 rounded-md border border-nero-600 text-[13px] text-nero-300 focus:outline-none focus:border-denim-600 cursor-pointer"
                     value={value}
                     onChange={(e) => onChange(e.target.value)}
                 >

@@ -462,7 +462,7 @@ export default function GeneratePDF({ labels, jobMeta, uploadedFileName, error }
 
 
   return (
-    <div className="w-full flex flex-col items-center gap-4 bg-nero-800 p-2.5">
+    <div className="w-full flex flex-col items-center gap-4 bg-nero-800 p-3">
       <AnimatePresence mode="wait">
         {(phase === "qr" || phase === "pdf" || phase === "merge") && (
           <ProgressBar progress={progress} phase={phase} />
@@ -473,7 +473,7 @@ export default function GeneratePDF({ labels, jobMeta, uploadedFileName, error }
         {pdfBlob && (
           <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }}>
             <button
-              className="w-48 h-8 flex items-center justify-center px-4 py-2 text-sm font-medium rounded-md text-white bg-denim-600 hover:bg-denim-700 active:scale-95 transition-all"
+              className="w-48 h-8 flex items-center justify-center px-4 py-2 text-sm font-semibold rounded-full text-white bg-denim-600 hover:bg-denim-700 active:scale-95 shadow-sm transition-all"
               onClick={() => {
                 const url = URL.createObjectURL(pdfBlob);
                 const a = document.createElement("a");

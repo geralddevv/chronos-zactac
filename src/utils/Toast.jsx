@@ -10,9 +10,9 @@ export default function Toast({ message, show, onClose }) {
   return (
     <div
       className={`
-        fixed bottom-6 left-1/2 -translate-x-1/2 
-        px-4 py-2 rounded-md text-sm text-white
-        bg-nero-700 border border-nero-500 shadow-lg
+        fixed bottom-6 left-1/2 -translate-x-1/2
+        px-4 py-2 rounded-md text-sm font-medium
+        bg-[#d1e7dd] text-[#0a3646] border-l-4 border-[#0a3646] shadow-lg
         transition-all duration-300
         ${show ? "opacity-100 translate-y-0" : "opacity-0 translate-y-6"}
       `}

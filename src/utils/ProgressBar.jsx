@@ -38,7 +38,7 @@ export default function ProgressBar({ progress, phase, onComplete }) {
         >
             <div className="w-full flex justify-center items-center flex-col">
                 <div className="w-full flex justify-center items-center gap-2">
-                    <div className="w-64 h-2 bg-nero-700 rounded-full overflow-hidden">
+                    <div className="w-64 h-2 bg-nero-900 rounded-full overflow-hidden">
                         <div
                             className="h-3 bg-denim-600 transition-all"
                             style={{ width: `${progress}%` }}
@@ -50,9 +50,9 @@ export default function ProgressBar({ progress, phase, onComplete }) {
                     </span>
                 </div>
 
-                <div className="text-nero-300 text-sm flex items-center gap-1.5">
+                <div className="text-nero-400 text-sm flex items-center gap-1.5">
                     {isLoading && (
-                        <div className="w-3 h-3 border-2 border-nero-500 border-t-transparent rounded-full animate-spin" />
+                        <div className="w-3 h-3 border-2 border-denim-300 border-t-transparent rounded-full animate-spin" />
                     )}
 
                     {getLabel()}

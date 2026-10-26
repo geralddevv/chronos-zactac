@@ -59,7 +59,7 @@ const GapInput = () => {
         <>
             {/* GAP X */}
             <div className="w-full flex">
-                <div className="w-[60%] h-8 flex items-center justify-center bg-nero-750 border border-nero-600 border-r-0 text-sm rounded-bl-md rounded-tl-md">
+                <div className="w-[60%] h-8 flex items-center justify-center bg-nero-750 border border-nero-600 border-r-0 text-sm text-nero-400 font-medium rounded-bl-md rounded-tl-md">
                     Gap X
                 </div>
 
@@ -71,13 +71,13 @@ const GapInput = () => {
                     onBlur={(e) => {
                         if (e.target.value === "") handleGapXChange("0");
                     }}
-                    className="no-spinner w-[40%] h-8 px-2 py-1 bg-nero-700 rounded-md rounded-l-none border border-nero-600 text-sm"
+                    className="no-spinner w-[40%] h-8 px-2 py-1 bg-nero-700 rounded-md rounded-l-none border border-nero-600 text-sm text-nero-300 focus:outline-none focus:border-denim-600 focus:ring-2 focus:ring-denim-600/15 transition-colors"
                 />
             </div>
 
             {/* GAP Y */}
             <div className="w-full flex">
-                <div className="w-[60%] h-8 flex items-center justify-center bg-nero-750 border border-nero-600 border-r-0 text-sm rounded-bl-md rounded-tl-md">
+                <div className="w-[60%] h-8 flex items-center justify-center bg-nero-750 border border-nero-600 border-r-0 text-sm text-nero-400 font-medium rounded-bl-md rounded-tl-md">
                     Gap Y
                 </div>
 
@@ -89,7 +89,7 @@ const GapInput = () => {
                     onBlur={(e) => {
                         if (e.target.value === "") handleGapYChange("0");
                     }}
-                    className="no-spinner w-[40%] h-8 px-2 py-1 bg-nero-700 rounded-md rounded-l-none border border-nero-600 text-sm"
+                    className="no-spinner w-[40%] h-8 px-2 py-1 bg-nero-700 rounded-md rounded-l-none border border-nero-600 text-sm text-nero-300 focus:outline-none focus:border-denim-600 focus:ring-2 focus:ring-denim-600/15 transition-colors"
                 />
             </div>
         </>

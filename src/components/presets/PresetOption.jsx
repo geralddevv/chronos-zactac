@@ -38,21 +38,21 @@ const PresetOption = ({ paperName, width, height, selected, onSelect }) => {
       }}
       className={`
     group
-    w-full h-full flex flex-col items-center justify-center p-4 gap-4 rounded-md
+    w-full h-full flex flex-col items-center justify-center p-4 gap-4 rounded-md border
     transition-colors duration-150 focus:outline-none
     ${selected
-          ? "ring-3 ring-denim-600 ring-inset bg-[#2b2b2b]"
-          : "bg-nero-800 hover:bg-[#2b2b2b] ring-0"
+          ? "ring-2 ring-denim-600 ring-inset border-denim-600 bg-denim-50"
+          : "bg-nero-800 border-nero-900 hover:bg-denim-50 hover:border-denim-200 ring-0"
         }
   `}
     >
       <img src={previewImg} className="w-24 h-24 rounded-md" />
 
-      <span className="flex flex-col justify-center items-center text-sm font-semibold">
-        <h4 className="text-base group-hover:text-denim-400 transition-colors duration-150">
+      <span className="flex flex-col justify-center items-center text-sm font-semibold text-nero-300">
+        <h4 className="text-base group-hover:text-denim-600 transition-colors duration-150">
           {paperName}
         </h4>
-        <h4 className="font-medium">{`${width} x ${height} mm`}</h4>
+        <h4 className="font-medium text-nero-400">{`${width} x ${height} mm`}</h4>
       </span>
     </button>
   );
